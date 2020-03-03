@@ -11,6 +11,4 @@ Implementações da cadeira de Métodos Numéricos 2.
 
 ## Links úteis
 
-	* [Processamento de imagem com derivada 1° e 2°](https://mccormickml.com/2013/02/26/image-derivative/)
-
-
+* [Processamento de imagem com derivada 1° e 2°](https://mccormickml.com/2013/02/26/image-derivative/)
