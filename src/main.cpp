@@ -1,12 +1,28 @@
 #include <iostream>
 #include <vector>
 #include "Answer.h"
+#include "Derivatives.h"
 #include <math.h>
 #include <string>
+
+double sin_fun( double x )
+{
+    return std::sin(x);
+}
 
 int main() 
 {
 
+    const double pi = 3.1415926535897;
+
+    Derivatives d;
+
+    Answer a = d.calculate_forward(&sin_fun, pi/3, 0.1);
+
+    std::cout << "Derivada real: " << std::cos(pi/3) << std::endl; 
+    std::cout << "Derivada aproximada: " << a.getResult() << std::endl;
+
+/*
     // Lets pretend we are reading the image matrix here for now
     std::vector< std::vector<double> > image = {
         {10.0, 10.0, 20.0, 20.0, 20.0},
@@ -75,8 +91,7 @@ int main()
 
         std::cout << line << std::endl;
     }
-
-
+*/
     return 0;
 
 }
