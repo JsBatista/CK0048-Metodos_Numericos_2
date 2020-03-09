@@ -13,14 +13,26 @@ double sin_fun( double x )
 int main() 
 {
 
+
     const double pi = 3.1415926535897;
 
     Derivatives d;
 
-    Answer a = d.calculate_forward(&sin_fun, pi/3, 0.1);
+    Answer a = d.calculate_second_forward(&sin_fun, pi/3, 0.1);
+    Answer b = d.calculate_second_backwards(&sin_fun, pi/3, 0.1);
+    Answer c = d.calculate_second_central(&sin_fun, pi/3, 0.1);
 
-    std::cout << "Derivada real: " << std::cos(pi/3) << std::endl; 
-    std::cout << "Derivada aproximada: " << a.getResult() << std::endl;
+
+
+    std::cout << "Derivada segunda real: " << (-1)*std::sin(pi/3) << std::endl << std::endl; 
+
+    std::cout << "Derivada segunda aproximada Forward: " << a.getResult() << std::endl;
+    std::cout << "Derivada segunda aproximada Forward: " << b.getResult() << std::endl;
+    std::cout << "Derivada segunda aproximada Central: " << c.getResult() << std::endl;
+
+
+
+
 
 /*
     // Lets pretend we are reading the image matrix here for now
