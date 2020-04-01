@@ -295,9 +295,9 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 	int n = 1;
 
 	double h = (b-a)/6;
-	double r0 = ((6*h)/20) * ( 11*f(a+h) - 14*f(a+2*h) + 26*f(a + 3*h) -14*f(a + 4*h) + 11*f(a+4*h));
+	double r0 = ((6*h)/20) * ( 11*f(a+h) - 14*f(a+2*h) + 26*f(a + 3*h) -14*f(a + 4*h) + 11*f(a+5*h));
 
-	std::cout << "Iteração 1: " << r0 << std::endl;
+	//std::cout << "Iteração 1: " << r0 << std::endl;
 
 	// Valor default de 'não inicializado' para evitar um warning chato poluindo o terminal
 	double r1 = -123456789;
@@ -313,7 +313,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 		for( double x0 = a; x0 < b; x0 += variation )
 		{	
 			double h = (variation)/6;
-			sum += ((6*h)/20) * ( 11*f(x0+h) - 14*f(x0+2*h) + 26*f(x0 + 3*h) -14*f(x0 + 4*h) + 11*f(x0+4*h));
+			sum += ((6*h)/20) * ( 11*f(x0+h) - 14*f(x0+2*h) + 26*f(x0 + 3*h) -14*f(x0 + 4*h) + 11*f(x0+5*h));
 
 		};
 		if(n!=2)
@@ -322,8 +322,8 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 		}
 		r1 = sum;
 
-		std::cout << "Iteração " << iterations << ": " << r1 << std::endl;
-		std::cout << "Diferença :" << std::abs(r0-r1) << std::endl << std::endl;
+		//std::cout << "Iteração " << iterations << ": " << r1 << std::endl;
+		//std::cout << "Diferença :" << std::abs(r0-r1) << std::endl << std::endl;
 
 	} while (std::abs(r0-r1) > error);
 
