@@ -446,20 +446,20 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 }
 
 
-
-
-
-
-
+// Calcula a Integral por Newton Legendre usando 2 pontos
 Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
 	int n = 1;
 
+	// Calculamos os x(alpha)
+	// 										a1 = - raiz(1/3)		
 	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.577350269);
+	// 										a2 = raiz(1/3)	
 	double xa2 = ((a + b) / 2) + ((b-a)/2)*(0.577350269);	
 
+	// 							  w1 = 1     w2 = 2
 	double r0 = ((b-a)/2)*( f(xa1)*1 + f(xa2)*1 );
 
 
@@ -482,6 +482,8 @@ Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a,
 		double sum = 0;
 		for( double x0 = a; x0 < b; x0 += variation )
 		{	
+			// 			   X0 + XF = X0 + Xo + Variacao
+			// 			   XF - X0 = X0 + Variacao - X0 = Variacao
 			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.577350269);
 			double xa2 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.577350269);	
 
@@ -509,16 +511,22 @@ Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a,
 }
 
 
+// Calcula a Integral por Newton Legendre usando 3 pontos
 Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
 	int n = 1;
 
+	// Calculamos os x(alpha)
+	// 										a1 = - raiz(3/5)		
 	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.774596669);
+	// 							a2 = 0
 	double xa2 = ((a + b) / 2);
+	// 										a3 = raiz(3/5)	
 	double xa3 = ((a + b) / 2) + ((b-a)/2)*(0.774596669);	 
 
+	//									w1				  w2				w3
 	double r0 = ((b-a)/2)*( f(xa1)*(5.0/9.0) + f(xa2)*(8.0/9.0) + f(xa3)*(5.0/9.0) );
 
 
@@ -541,6 +549,8 @@ Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a,
 		double sum = 0;
 		for( double x0 = a; x0 < b; x0 += variation )
 		{	
+			// 			   X0 + XF = X0 + Xo + Variacao
+			// 			   XF - X0 = X0 + Variacao - X0 = Variacao
 			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.774596669);
 			double xa2 = ((x0 + x0 + variation) / 2);	
 			double xa3 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.774596669);	
@@ -572,16 +582,21 @@ Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a,
 }
 
 
-
+// Calcula a Integral por Newton Legendre usando 4 pontos
 Answer Integrate::calculate_by_newton_legendre_4( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
 	int n = 1;
 
+	// Calculamos os x(alpha)
+	// 											a1 
 	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.861136311);
+	// 											a2
 	double xa2 = ((a + b) / 2) + ((b-a)/2)*(-0.339981043);
-	double xa3 = ((a + b) / 2) + ((b-a)/2)*(0.339981043);	 
+	// 											a3
+	double xa3 = ((a + b) / 2) + ((b-a)/2)*(0.339981043);
+	// 											a4	 
 	double xa4 = ((a + b) / 2) + ((b-a)/2)*(0.861136311);	 
 
 
@@ -607,7 +622,8 @@ Answer Integrate::calculate_by_newton_legendre_4( double (*f)(double), double a,
 		double sum = 0;
 		for( double x0 = a; x0 < b; x0 += variation )
 		{	
-
+			// 			   X0 + XF = X0 + Xo + Variacao
+			// 			   XF - X0 = X0 + Variacao - X0 = Variacao
 			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.861136311);
 			double xa2 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.339981043);
 			double xa3 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.339981043);	 
