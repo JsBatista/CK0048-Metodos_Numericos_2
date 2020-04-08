@@ -444,3 +444,197 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 	}
 	return Answer(r1, iterations, 0);
 }
+
+
+
+
+
+
+
+Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a, double b, double error, bool debug)
+{
+
+	int iterations = 1;
+	int n = 1;
+
+	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.577350269);
+	double xa2 = ((a + b) / 2) + ((b-a)/2)*(0.577350269);	
+
+	double r0 = ((b-a)/2)*( f(xa1)*1 + f(xa2)*1 );
+
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Início de Integração por Newton Legendre, 2 pontos]" << std::endl<< std::endl;
+		std::cout << "Iteração 1: "<< std::fixed << std::setprecision(6) << r0 << std::endl<< std::endl;
+	}
+
+	// Valor default de 'não inicializado' para evitar um warning chato poluindo o terminal
+	double r1 = -123456789;
+
+	do
+	{
+		n *= 2;
+		iterations += 1;
+		double variation = (b-a)/n;
+
+
+		double sum = 0;
+		for( double x0 = a; x0 < b; x0 += variation )
+		{	
+			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.577350269);
+			double xa2 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.577350269);	
+
+			sum += ((variation)/2)*( f(xa1) + f(xa2) );
+		};
+		if(n!=2)
+		{
+			r0 = r1;
+		}
+		r1 = sum;
+
+		if(debug)
+		{
+			std::cout << "Iteração " << iterations << ": " << r1 << std::endl;
+			std::cout << "Diferença : "<< std::scientific << std::abs(r0-r1) << std::endl<< std::endl << std::fixed;
+		}	
+
+	} while (std::abs(r0-r1) > error);
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Fim de Integração por Newton Legendre, 2 pontos]" << std::endl;
+	}
+	return Answer(r1, iterations, 0);
+}
+
+
+Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a, double b, double error, bool debug)
+{
+
+	int iterations = 1;
+	int n = 1;
+
+	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.774596669);
+	double xa2 = ((a + b) / 2);
+	double xa3 = ((a + b) / 2) + ((b-a)/2)*(0.774596669);	 
+
+	double r0 = ((b-a)/2)*( f(xa1)*(5.0/9.0) + f(xa2)*(8.0/9.0) + f(xa3)*(5.0/9.0) );
+
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Início de Integração por Newton Legendre, 3 pontos]" << std::endl<< std::endl;
+		std::cout << "Iteração 1: "<< std::fixed << std::setprecision(6) << r0 << std::endl<< std::endl;
+	}
+
+	// Valor default de 'não inicializado' para evitar um warning chato poluindo o terminal
+	double r1 = -123456789;
+
+	do
+	{
+		n *= 2;
+		iterations += 1;
+		double variation = (b-a)/n;
+
+
+		double sum = 0;
+		for( double x0 = a; x0 < b; x0 += variation )
+		{	
+			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.774596669);
+			double xa2 = ((x0 + x0 + variation) / 2);	
+			double xa3 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.774596669);	
+
+
+			sum += ((variation)/2)*( f(xa1)*(5.0/9.0) + f(xa2)*(8.0/9.0) + f(xa3)*(5.0/9.0) );
+
+		};
+		
+		if(n!=2)
+		{
+			r0 = r1;
+		}
+		r1 = sum;
+
+		if(debug)
+		{
+			std::cout << "Iteração " << iterations << ": " << r1 << std::endl;
+			std::cout << "Diferença : "<< std::scientific << std::abs(r0-r1) << std::endl<< std::endl << std::fixed;
+		}	
+
+	} while (std::abs(r0-r1) > error);
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Fim de Integração por Newton Legendre, 3 pontos]" << std::endl;
+	}
+	return Answer(r1, iterations, 0);
+}
+
+
+
+Answer Integrate::calculate_by_newton_legendre_4( double (*f)(double), double a, double b, double error, bool debug)
+{
+
+	int iterations = 1;
+	int n = 1;
+
+	double xa1 = ((a + b) / 2) + ((b-a)/2)*(-0.861136311);
+	double xa2 = ((a + b) / 2) + ((b-a)/2)*(-0.339981043);
+	double xa3 = ((a + b) / 2) + ((b-a)/2)*(0.339981043);	 
+	double xa4 = ((a + b) / 2) + ((b-a)/2)*(0.861136311);	 
+
+
+	double r0 = ((b-a)/2)*( f(xa1)*(0.3478548451) + f(xa2)*(0.6521451548) + f(xa3)*(0.6521451548) + f(xa4)*(0.3478548451) );
+
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Início de Integração por Newton Legendre, 4 pontos]" << std::endl<< std::endl;
+		std::cout << "Iteração 1: "<< std::fixed << std::setprecision(6) << r0 << std::endl<< std::endl;
+	}
+
+	// Valor default de 'não inicializado' para evitar um warning chato poluindo o terminal
+	double r1 = -123456789;
+
+	do
+	{
+		n *= 2;
+		iterations += 1;
+		double variation = (b-a)/n;
+
+
+		double sum = 0;
+		for( double x0 = a; x0 < b; x0 += variation )
+		{	
+
+			double xa1 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.861136311);
+			double xa2 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(-0.339981043);
+			double xa3 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.339981043);	 
+			double xa4 = ((x0 + x0 + variation) / 2) + ((variation)/2)*(0.861136311);	 
+
+
+			sum += ((variation)/2)*( f(xa1)*(0.3478548451) + f(xa2)*(0.6521451548) + f(xa3)*(0.6521451548) + f(xa4)*(0.3478548451) );
+
+		};
+		
+		if(n!=2)
+		{
+			r0 = r1;
+		}
+		r1 = sum;
+
+		if(debug)
+		{
+			std::cout << "Iteração " << iterations << ": " << r1 << std::endl;
+			std::cout << "Diferença : "<< std::scientific << std::abs(r0-r1) << std::endl<< std::endl << std::fixed;
+		}	
+
+	} while (std::abs(r0-r1) > error);
+
+	if(debug)
+	{
+		std::cout << std::endl <<"[Fim de Integração por Newton Legendre, 4 pontos]" << std::endl;
+	}
+	return Answer(r1, iterations, 0);
+}

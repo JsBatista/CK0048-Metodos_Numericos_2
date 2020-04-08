@@ -15,4 +15,8 @@ class Integrate
 		Answer calculate_by_newton_cotes_deg_3_open( double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
 		Answer calculate_by_newton_cotes_deg_4_open( double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
 
+		Answer calculate_by_newton_legendre_2(double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
+		Answer calculate_by_newton_legendre_3(double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
+		Answer calculate_by_newton_legendre_4(double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
+
 };
