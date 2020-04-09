@@ -22,70 +22,22 @@ int main()
 
     Integrate i;
 
-    
-	// Calculamos todas as integrais
-	// Usamos o erro como 1e-6 e debug como falso para desativar os couts durante a execução    
-    /*
-    Answer a = i.calculate_by_newton_cotes_deg_1_closed( &fun, 0, 1, 1e-6, false);
-    Answer b = i.calculate_by_newton_cotes_deg_2_closed( &fun, 0, 1, 1e-6, false);
-    Answer c = i.calculate_by_newton_cotes_deg_3_closed( &fun, 0, 1, 1e-6, false);
-    Answer d = i.calculate_by_newton_cotes_deg_4_closed( &fun, 0, 1, 1e-6, false);
-    Answer e = i.calculate_by_newton_cotes_deg_1_open( &fun, 0, 1, 1e-6, false);
-    Answer f = i.calculate_by_newton_cotes_deg_2_open( &fun, 0, 1, 1e-6, false);
-    Answer g = i.calculate_by_newton_cotes_deg_3_open( &fun, 0, 1, 1e-6, false);
-    Answer h = i.calculate_by_newton_cotes_deg_4_open( &fun, 0, 1, 1e-6, false);
-    
-
-    Answer nl2 = i.calculate_by_newton_legendre_2( &fun, 0, 1, 1e-6, true);
-    Answer nl3 = i.calculate_by_newton_legendre_3( &fun, 0, 1, 1e-6, true);
-    */
-    Answer nl4 = i.calculate_by_newton_legendre_4( &fun, 0, 1, 1e-6, true);
+    Answer gl2 = i.calculate_by_gauss_legendre_2( &fun, 0, 1, 1e-6, false);
+    Answer gl3 = i.calculate_by_gauss_legendre_3( &fun, 0, 1, 1e-6, false);
+    Answer gl4 = i.calculate_by_gauss_legendre_4( &fun, 0, 1, 1e-6, false);
 
     // Ajustando a precisão pra 6 casas decimais
     std::cout << std::fixed << std::setprecision(7) << std::endl;
     
-    /*
-    // Imprimimos cada resultado
-    std::cout << "Integral grau 1: " << a.getResult() << std::endl;
-    std::cout << "Iterações: " << a.getIterations() << std::endl << std::endl;
 
-
-    std::cout << "Integral grau 2: " << b.getResult() << std::endl;
-    std::cout << "Iterações: " << b.getIterations() << std::endl<< std::endl;
-
-
-    std::cout << "Integral grau 3: " << c.getResult() << std::endl;
-    std::cout << "Iterações: " << c.getIterations() << std::endl<< std::endl;
-
-
-    std::cout << "Integral grau 4: " << d.getResult() << std::endl;
-    std::cout << "Iterações: " << d.getIterations() << std::endl<< std::endl;
-
-
-    std::cout << "Integral grau 1 aberta: " << e.getResult() << std::endl;
-    std::cout << "Iterações: " << e.getIterations() << std::endl<< std::endl;
-
-
-    std::cout << "Integral grau 2 aberta: " << f.getResult() << std::endl;
-    std::cout << "Iterações: " << f.getIterations() << std::endl<< std::endl;
-
-
-    std::cout << "Integral grau 3 aberta: " << g.getResult() << std::endl;
-    std::cout << "Iterações: " << g.getIterations() << std::endl<< std::endl;
-
-    std::cout << "Integral grau 4 aberta: " << h.getResult() << std::endl;
-    std::cout << "Iterações: " << h.getIterations() << std::endl<< std::endl;
+    std::cout << "Integral Gauss Legendre 2 pontos: " << gl2.getResult() << std::endl;
+    std::cout << "Iterações: " << gl2.getIterations() << std::endl<< std::endl;
     
+    std::cout << "Integral Gauss Legendre 3 pontos: " << gl3.getResult() << std::endl;
+    std::cout << "Iterações: " << gl3.getIterations() << std::endl<< std::endl;
 
-    std::cout << "Integral Newton Legendre 2 pontos: " << nl2.getResult() << std::endl;
-    std::cout << "Iterações: " << nl2.getIterations() << std::endl<< std::endl;
-    
-    std::cout << "Integral Newton Legendre 3 pontos: " << nl3.getResult() << std::endl;
-    std::cout << "Iterações: " << nl3.getIterations() << std::endl<< std::endl;
-    */
-
-    std::cout << "Integral Newton Legendre 4 pontos: " << nl4.getResult() << std::endl;
-    std::cout << "Iterações: " << nl4.getIterations() << std::endl<< std::endl;
+    std::cout << "Integral Gauss Legendre 4 pontos: " << gl4.getResult() << std::endl;
+    std::cout << "Iterações: " << gl4.getIterations() << std::endl<< std::endl;
     return 0;
 
 }

@@ -446,8 +446,8 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 }
 
 
-// Calcula a Integral por Newton Legendre usando 2 pontos
-Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a, double b, double error, bool debug)
+// Calcula a Integral por Gauss Legendre usando 2 pontos
+Answer Integrate::calculate_by_gauss_legendre_2( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
@@ -511,8 +511,8 @@ Answer Integrate::calculate_by_newton_legendre_2( double (*f)(double), double a,
 }
 
 
-// Calcula a Integral por Newton Legendre usando 3 pontos
-Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a, double b, double error, bool debug)
+// Calcula a Integral por Gauss Legendre usando 3 pontos
+Answer Integrate::calculate_by_gauss_legendre_3( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
@@ -582,8 +582,8 @@ Answer Integrate::calculate_by_newton_legendre_3( double (*f)(double), double a,
 }
 
 
-// Calcula a Integral por Newton Legendre usando 4 pontos
-Answer Integrate::calculate_by_newton_legendre_4( double (*f)(double), double a, double b, double error, bool debug)
+// Calcula a Integral por Gauss Legendre usando 4 pontos
+Answer Integrate::calculate_by_gauss_legendre_4( double (*f)(double), double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
