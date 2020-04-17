@@ -765,16 +765,16 @@ Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool d
 
 		case 4:
 	     	// Valores resultantes já tabelados
-	     	x1 = 0.32254768;
-	     	x2 = 1.7457611;
-	     	x3 = 4.53662029;
-	     	x4 = 9.39507091;
+	     	x1 = 0.322547689619370;
+	     	x2 = 1.745761101158365;
+	     	x3 = 4.536620296921143;
+	     	x4 = 9.395070912301122;
 
 	     	// Valores resultantes já tabelados
-	     	w1 = 0.60315427;
-	     	w2 = 0.35741869;
-	     	w3 = 0.03888790;
-	     	w4 = 0.00053929;
+	     	w1 = 0.6031541043420089;
+	     	w2 = 0.3574186924377639;
+	     	w3 = 0.038887908515004704;
+	     	w4 = 0.0005392947055613193;
 
 	     	result = f(x1)*w1 + f(x2)*w2 + f(x3)*w3 + f(x4)*w4;
 

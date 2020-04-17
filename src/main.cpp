@@ -30,9 +30,9 @@ int main()
     Answer gh3 = i.calculate_by_gauss_hermite( &fun2, 3);
     Answer gh4 = i.calculate_by_gauss_hermite( &fun2, 4);
 
-    Answer gl2 = i.calculate_by_gauss_laguerre( &fun, 2);
-    Answer gl3 = i.calculate_by_gauss_laguerre( &fun, 3);
-    Answer gl4 = i.calculate_by_gauss_laguerre( &fun, 4);
+    Answer gl2 = i.calculate_by_gauss_laguerre( &fun2, 2);
+    Answer gl3 = i.calculate_by_gauss_laguerre( &fun2, 3);
+    Answer gl4 = i.calculate_by_gauss_laguerre( &fun2, 4);
 
 
     // Ajustando a precisão pra 6 casas decimais
