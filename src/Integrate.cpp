@@ -787,3 +787,61 @@ Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool d
 
 	}
 }
+
+
+Answer Integrate::calculate_by_gauss_chebyshev(double (*f)(double), int n, bool debug)
+{
+	// Declarando variáveis aqui para evitar erros de redeclaração
+	double x1,x2,x3,x4;
+
+	// OBS: w1 = w2 = w3 = w4 = pi / n sempre
+	double w = 3.141592654 / n;
+    
+    double result;
+
+	switch (n)
+	{
+
+	    case 2:
+	     	// -1/sqrt(2) e 1/sqrt(2) 
+	     	x1 = -0.707106781;
+	     	x2 = 0.707106781;
+
+	     	result = f(x1)*w + f(x2)*w;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+	     case 3:
+
+			// -sqrt(3)/2 , 0 e sqrt(3)/2 
+	     	x1 = -0.866025403;
+	     	x2 = 0;
+	     	x3 = 0.866025403;
+
+
+	     	result = f(x1)*w + f(x2)*w + f(x3)*w;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+		case 4:
+	     	// Valores resultantes já tabelados
+	     	x1 = -0.923879532;
+	     	x2 = -0.382683432;
+	     	x3 = 0.382683432;
+	     	x4 = 0.923879532;
+
+	     	result = f(x1)*w + f(x2)*w + f(x3)*w + f(x4)*w;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+
+	    return Answer("Método não implementado para essa quantia de pontos.");
+
+	}
+}

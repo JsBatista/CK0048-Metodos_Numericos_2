@@ -22,6 +22,6 @@ class Integrate
 
 		Answer calculate_by_gauss_hermite(double (*f)(double), int n, bool debug = false);
 		Answer calculate_by_gauss_laguerre(double (*f)(double), int n, bool debug = false);
-		Answer calculate_by_gauss_chesbychev(double (*f)(double), int n, bool debug = false);
+		Answer calculate_by_gauss_chebyshev(double (*f)(double), int n, bool debug = false);
 
 };

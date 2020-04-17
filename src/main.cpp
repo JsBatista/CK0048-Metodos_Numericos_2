@@ -34,6 +34,10 @@ int main()
     Answer gl3 = i.calculate_by_gauss_laguerre( &fun2, 3);
     Answer gl4 = i.calculate_by_gauss_laguerre( &fun2, 4);
 
+    Answer gc2 = i.calculate_by_gauss_chebyshev( &fun, 2);
+    Answer gc3 = i.calculate_by_gauss_chebyshev( &fun, 3);
+    Answer gc4 = i.calculate_by_gauss_chebyshev( &fun, 4);
+
 
     // Ajustando a precisão pra 6 casas decimais
     std::cout << std::fixed << std::setprecision(7) << std::endl;
@@ -44,7 +48,10 @@ int main()
     std::cout << "Integral Gauss Hermite 4 pontos: " << gh4.getResult() << std::endl << std::endl;
     std::cout << "Integral Gauss Laguerre 2 pontos: " << gl2.getResult() << std::endl;
     std::cout << "Integral Gauss Laguerre 3 pontos: " << gl3.getResult() << std::endl;
-    std::cout << "Integral Gauss Laguerre 4 pontos: " << gl4.getResult() << std::endl;
+    std::cout << "Integral Gauss Laguerre 4 pontos: " << gl4.getResult() << std::endl << std::endl;
+    std::cout << "Integral Gauss Chebyshev 2 pontos: " << gc2.getResult() << std::endl;
+    std::cout << "Integral Gauss Chebyshev 3 pontos: " << gc3.getResult() << std::endl;
+    std::cout << "Integral Gauss Chebyshev 4 pontos: " << gc4.getResult() << std::endl;
     return 0;
 
 }
