@@ -654,3 +654,69 @@ Answer Integrate::calculate_by_gauss_legendre_4( double (*f)(double), double a, 
 	}
 	return Answer(r1, iterations, 0);
 }
+
+Answer Integrate::calculate_by_gauss_hermite(double (*f)(double), int n, bool debug)
+{
+	switch (n)
+	{
+		// Declarando variáveis aqui para evitar erros de redeclaração
+		double x1,x2,x3,x4;
+		double w1,w2,w3,w4;
+	    double result;
+
+	    case 2:
+	     	// 1 / sqrt(2) e -1 / sqrt(2)
+	     	x1 = 0.707106781;
+	     	x2 = -0.707106781;
+
+	     	// sqrt(pi) e sqrt(pi)
+	     	w1 = 0.886226925;
+	     	w2 = w1;
+
+	     	result = f(x1)*w1 + f(x2)*w2;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+	     case 3:
+	     	// sqrt(3/2), 0 e -sqrt(3/2)
+	     	x1 = 1.224744871;
+	     	x2 = 0;
+	     	x3 = -1.224744871;
+
+	     	// sqrt(pi)/6, 2*sqrt(pi)/3 e sqrt(pi)/6
+	     	w1 = 0.295408975;
+	     	w2 = 1.181635901;
+	     	w3 = w1;
+
+	     	result = f(x1)*w1 + f(x2)*w2 + f(x3)*w3;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+		case 4:
+	     	// sqrt(3/2), 0 e -sqrt(3/2)
+	     	x1 = 1.65068012;
+	     	x2 = 0.52464762;
+	     	x3 = -0.52464762;
+	     	x4 = -1.65068012;
+
+	     	// sqrt(pi)/6, 2*sqrt(pi)/3 e sqrt(pi)/6
+	     	w1 = 0.045875855*sqrt(3.141592654);
+	     	w2 = 0.454124148*sqrt(3.141592654);
+	     	w3 = w2;
+	     	w4 = w1;
+
+	     	result = f(x1)*w1 + f(x2)*w2 + f(x3)*w3 + f(x4)*w4;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+
+	    return Answer("Método não implementado para essa quantia de pontos.");
+
+	}
+}

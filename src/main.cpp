@@ -15,6 +15,10 @@ double fun( double x )
     return std::pow((std::sin(2*x) +(4*x*x) + 3*x), 2);
 }
 
+double fun2( double x )
+{
+    return x*x + 2*x + 1;
+}
 
 int main() 
 {
@@ -22,22 +26,17 @@ int main()
 
     Integrate i;
 
-    Answer gl2 = i.calculate_by_gauss_legendre_2( &fun, 0, 1, 1e-6, false);
-    Answer gl3 = i.calculate_by_gauss_legendre_3( &fun, 0, 1, 1e-6, false);
-    Answer gl4 = i.calculate_by_gauss_legendre_4( &fun, 0, 1, 1e-6, false);
+    Answer gh2 = i.calculate_by_gauss_hermite( &fun2, 2);
+    Answer gh3 = i.calculate_by_gauss_hermite( &fun2, 3);
+    Answer gh4 = i.calculate_by_gauss_hermite( &fun2, 4);
 
     // Ajustando a precisão pra 6 casas decimais
     std::cout << std::fixed << std::setprecision(7) << std::endl;
     
 
-    std::cout << "Integral Gauss Legendre 2 pontos: " << gl2.getResult() << std::endl;
-    std::cout << "Iterações: " << gl2.getIterations() << std::endl<< std::endl;
-    
-    std::cout << "Integral Gauss Legendre 3 pontos: " << gl3.getResult() << std::endl;
-    std::cout << "Iterações: " << gl3.getIterations() << std::endl<< std::endl;
-
-    std::cout << "Integral Gauss Legendre 4 pontos: " << gl4.getResult() << std::endl;
-    std::cout << "Iterações: " << gl4.getIterations() << std::endl<< std::endl;
+    std::cout << "Integral Gauss Hermite 2 pontos: " << gh2.getResult() << std::endl;
+    std::cout << "Integral Gauss Hermite 3 pontos: " << gh3.getResult() << std::endl;
+    std::cout << "Integral Gauss Hermite 4 pontos: " << gh4.getResult() << std::endl;
     return 0;
 
 }
