@@ -1,7 +1,7 @@
 #include "Answer.h"
 
 Answer::Answer(){
-    this->result = {};
+    this->result = -1;
     this->iterations = 0;
     this->time = 0;
     this->errorFlag = true;
@@ -18,7 +18,7 @@ Answer::Answer(double  result, int iterations, double time){
 
 
 Answer::Answer(string errorMessage){
-    this->result = {};
+    this->result = -1;
     this->iterations = 0;
     this->time = 0;
     this->errorFlag = true;

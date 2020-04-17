@@ -26,6 +26,7 @@ int main()
 
     Integrate i;
 
+
     Answer gh2 = i.calculate_by_gauss_hermite( &fun2, 2);
     Answer gh3 = i.calculate_by_gauss_hermite( &fun2, 3);
     Answer gh4 = i.calculate_by_gauss_hermite( &fun2, 4);

@@ -655,6 +655,18 @@ Answer Integrate::calculate_by_gauss_legendre_4( double (*f)(double), double a, 
 	return Answer(r1, iterations, 0);
 }
 
+
+/* Os 3 métodos abaixo calculam integrações usando o seguinte roteiro em uma única iteração:
+	
+	Defini-se as raízes X e os pesos W
+	Dependendo do número de pontos especificado, realiza-se o cálculo com as raízes e pesos apropriados
+	Retorna a resposta com 1 iteração
+
+	Caso o n passado não esteja definido, a função retorna uma resposta de Erro com resultado -1 e uma mensagem apropriada.
+
+*/
+
+// Calcula a Integral Especial por Gauss Hermite usando 2, 3 ou 4 pontos
 Answer Integrate::calculate_by_gauss_hermite(double (*f)(double), int n, bool debug)
 {
 	switch (n)
@@ -721,6 +733,7 @@ Answer Integrate::calculate_by_gauss_hermite(double (*f)(double), int n, bool de
 	}
 }
 
+// Calcula a Integral Especial por Gauss Laguerre usando 2, 3 ou 4 pontos
 Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool debug)
 {
 	switch (n)
@@ -788,7 +801,7 @@ Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool d
 	}
 }
 
-
+// Calcula a Integral Especial por Gauss Chebyshev usando 2, 3 ou 4 pontos
 Answer Integrate::calculate_by_gauss_chebyshev(double (*f)(double), int n, bool debug)
 {
 	// Declarando variáveis aqui para evitar erros de redeclaração
