@@ -720,3 +720,70 @@ Answer Integrate::calculate_by_gauss_hermite(double (*f)(double), int n, bool de
 
 	}
 }
+
+Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool debug)
+{
+	switch (n)
+	{
+		// Declarando variáveis aqui para evitar erros de redeclaração
+		double x1,x2,x3,x4;
+		double w1,w2,w3,w4;
+	    double result;
+
+	    case 2:
+	     	// 2 - sqrt(2) e 2 + sqrt(2)
+	     	x1 = 0.585786437;
+	     	x2 = 3.414213562;
+
+	     	// (1/4)*(2 + sqrt(2)) e (1/4)*(2 - sqrt(2)) 
+	     	w1 = 0.85355339;
+	     	w2 = 0.146446609;
+
+	     	result = f(x1)*w1 + f(x2)*w2;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+	     case 3:
+
+			// Valores resultantes já tabelados	     	
+	     	x1 = 0.4157745568;
+	     	x2 = 2.2942803603;
+	     	x3 = 6.2899450829;
+
+	     	// Valores resultantes já tabelados
+	     	w1 = 0.7110930099;
+	     	w2 = 0.2785177336;
+	     	w3 = 0.0103892565;
+
+	     	result = f(x1)*w1 + f(x2)*w2 + f(x3)*w3;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+		case 4:
+	     	// Valores resultantes já tabelados
+	     	x1 = 0.32254768;
+	     	x2 = 1.7457611;
+	     	x3 = 4.53662029;
+	     	x4 = 9.39507091;
+
+	     	// Valores resultantes já tabelados
+	     	w1 = 0.60315427;
+	     	w2 = 0.35741869;
+	     	w3 = 0.03888790;
+	     	w4 = 0.00053929;
+
+	     	result = f(x1)*w1 + f(x2)*w2 + f(x3)*w3 + f(x4)*w4;
+
+	     	return Answer(result, 1, 0);
+			
+			break;
+
+
+	    return Answer("Método não implementado para essa quantia de pontos.");
+
+	}
+}
