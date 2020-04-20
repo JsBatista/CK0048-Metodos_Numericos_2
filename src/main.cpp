@@ -8,6 +8,7 @@
 #include <math.h>
 // Necessário para manipulação de Strings
 #include <string>
+#include <functional>
 
 // Aqui, definimos nossa função que será testada (a mesma presente na aula 8)
 double fun( double x )

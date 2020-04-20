@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <math.h>
+#include <functional>
 
 // Construtor padrão
 Integrate::Integrate(){
@@ -667,7 +668,7 @@ Answer Integrate::calculate_by_gauss_legendre_4( double (*f)(double), double a, 
 */
 
 // Calcula a Integral Especial por Gauss Hermite usando 2, 3 ou 4 pontos
-Answer Integrate::calculate_by_gauss_hermite(double (*f)(double), int n, bool debug)
+Answer Integrate::calculate_by_gauss_hermite(const std::function<double( double )> &f, int n, bool debug)
 {
 	switch (n)
 	{
@@ -877,6 +878,7 @@ Answer Integrate::calculate_by_singularity_gh(double (*f)(double), double a, dou
 	const double e = std::exp(1.0);
 	const double PI  =3.141592653589793238463;
 
+
  	auto fun = [&](double s) 
 	{ 
 		if(simple){
@@ -887,72 +889,7 @@ Answer Integrate::calculate_by_singularity_gh(double (*f)(double), double a, dou
 		return std::pow(e, (s*s) ) * f( (a+b)/2 + ((b-a)/2)*std::tanh( (PI/2)*std::sinh(s) ) ) * ( ((b-a)/2)*( (PI*std::cosh(s)) / (2*std::pow(std::cosh( (PI/2)*std::sinh(s) ), 2)  ) ));
 	};
 
-    
-    // Método de Gauss-Hermite
-	switch (n)
-	{
-		// Declarando variáveis aqui para evitar erros de redeclaração
-		double x1,x2,x3,x4;
-		double w1,w2,w3,w4;
-	    double result;
-
-	    case 2:
-	     	// 1 / sqrt(2) e -1 / sqrt(2)
-	     	x1 = 0.707106781;
-	     	x2 = -0.707106781;
-
-	     	// sqrt(pi) e sqrt(pi)
-	     	w1 = 0.886226925;
-	     	w2 = w1;
-
-	     	result = fun(x1)*w1 + fun(x2)*w2;
-
-	     	return Answer(result, 1, 0);
-			
-			break;
-
-	     case 3:
-	     	// sqrt(3/2), 0 e -sqrt(3/2)
-	     	x1 = 1.224744871;
-	     	x2 = 0;
-	     	x3 = -1.224744871;
-
-	     	// sqrt(pi)/6, 2*sqrt(pi)/3 e sqrt(pi)/6
-	     	w1 = 0.295408975;
-	     	w2 = 1.181635901;
-	     	w3 = w1;
-
-	     	result = fun(x1)*w1 + fun(x2)*w2 + fun(x3)*w3;
-
-	     	return Answer(result, 1, 0);
-			
-			break;
-
-		case 4:
-	     	// sqrt(3/2), 0 e -sqrt(3/2)
-	     	x1 = 1.65068012;
-	     	x2 = 0.52464762;
-	     	x3 = -0.52464762;
-	     	x4 = -1.65068012;
-
-	     	// sqrt(pi)/6, 2*sqrt(pi)/3 e sqrt(pi)/6
-	     	w1 = 0.045875855*sqrt(3.141592654);
-	     	w2 = 0.454124148*sqrt(3.141592654);
-	     	w3 = w2;
-	     	w4 = w1;
-
-	     	result = fun(x1)*w1 + fun(x2)*w2 + fun(x3)*w3 + fun(x4)*w4;
-
-	     	return Answer(result, 1, 0);
-			
-			break;
-
-
-	    return Answer("Método não implementado para essa quantia de pontos.");
-
-	}
-
-
+	return Integrate::calculate_by_gauss_hermite(fun, n);
 }
 
 
