@@ -17,7 +17,7 @@ double fun( double x )
 
 double fun2( double x )
 {
-    return x*x + 2*x + 1;
+    return 1/(std::sqrt(x));
 }
 
 int main() 
@@ -27,32 +27,24 @@ int main()
     Integrate i;
 
 
-    Answer gh2 = i.calculate_by_gauss_hermite( &fun2, 2);
-    Answer gh3 = i.calculate_by_gauss_hermite( &fun2, 3);
-    Answer gh4 = i.calculate_by_gauss_hermite( &fun2, 4);
-
-    Answer gl2 = i.calculate_by_gauss_laguerre( &fun2, 2);
-    Answer gl3 = i.calculate_by_gauss_laguerre( &fun2, 3);
-    Answer gl4 = i.calculate_by_gauss_laguerre( &fun2, 4);
-
-    Answer gc2 = i.calculate_by_gauss_chebyshev( &fun, 2);
-    Answer gc3 = i.calculate_by_gauss_chebyshev( &fun, 3);
-    Answer gc4 = i.calculate_by_gauss_chebyshev( &fun, 4);
+    Answer ss1 = i.calculate_by_singularity_gh(&fun2, 0, 1, 2, true);
+    Answer ss2 = i.calculate_by_singularity_gh(&fun2, 0, 1, 3, true);
+    Answer ss3 = i.calculate_by_singularity_gh(&fun2, 0, 1, 4, true);
+    Answer sd1 = i.calculate_by_singularity_gh(&fun2, 0, 1, 2, false);
+    Answer sd2 = i.calculate_by_singularity_gh(&fun2, 0, 1, 3, false);
+    Answer sd3 = i.calculate_by_singularity_gh(&fun2, 0, 1, 4, false);
 
 
     // Ajustando a precisão pra 6 casas decimais
     std::cout << std::fixed << std::setprecision(7) << std::endl;
     
 
-    std::cout << "Integral Gauss Hermite 2 pontos: " << gh2.getResult() << std::endl;
-    std::cout << "Integral Gauss Hermite 3 pontos: " << gh3.getResult() << std::endl;
-    std::cout << "Integral Gauss Hermite 4 pontos: " << gh4.getResult() << std::endl << std::endl;
-    std::cout << "Integral Gauss Laguerre 2 pontos: " << gl2.getResult() << std::endl;
-    std::cout << "Integral Gauss Laguerre 3 pontos: " << gl3.getResult() << std::endl;
-    std::cout << "Integral Gauss Laguerre 4 pontos: " << gl4.getResult() << std::endl << std::endl;
-    std::cout << "Integral Gauss Chebyshev 2 pontos: " << gc2.getResult() << std::endl;
-    std::cout << "Integral Gauss Chebyshev 3 pontos: " << gc3.getResult() << std::endl;
-    std::cout << "Integral Gauss Chebyshev 4 pontos: " << gc4.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Simples n = 2: " << ss1.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Simples n = 3: " << ss2.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Simples n = 4: " << ss3.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Dupla n = 2: " << sd1.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Dupla n = 3: " << sd2.getResult() << std::endl;
+    std::cout << "Integral por Singularidade Dupla n = 4: " << sd3.getResult() << std::endl;
     return 0;
 
 }

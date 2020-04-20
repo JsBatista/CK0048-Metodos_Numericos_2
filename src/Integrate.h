@@ -4,6 +4,7 @@
 
 class Integrate
 {
+
 	public:
 		Integrate();
 		Answer calculate_by_newton_cotes_deg_1_closed( double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
@@ -23,5 +24,8 @@ class Integrate
 		Answer calculate_by_gauss_hermite(double (*f)(double), int n, bool debug = false);
 		Answer calculate_by_gauss_laguerre(double (*f)(double), int n, bool debug = false);
 		Answer calculate_by_gauss_chebyshev(double (*f)(double), int n, bool debug = false);
+
+		Answer calculate_by_singularity_gh(double (*f)(double), double a, double b, int n, bool simple, double error=0.000001, bool debug=false);
+		Answer calculate_by_singularity_gh_double(double (*f)(double), double a, double b, double error=0.000001, bool debug=false);
 
 };
