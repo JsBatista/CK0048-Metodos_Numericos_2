@@ -26,7 +26,7 @@ Integrate::Integrate(){
 */
 
 // Calcula a integral por Newton Cotes com o polinômio de interpolação de grau 1 com a abordagem fechada
-Answer Integrate::calculate_by_newton_cotes_deg_1_closed( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_newton_cotes_deg_1_closed( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 	int iterations = 1;
 	int n = 1;
@@ -79,7 +79,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_1_closed( double (*f)(double), d
 
 
 // Calcula a integral por Newton Cotes com o polinômio de interpolação de grau 2 com a abordagem fechada
-Answer Integrate::calculate_by_newton_cotes_deg_2_closed( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_newton_cotes_deg_2_closed( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 	int iterations = 1;
 	int n = 1;
@@ -130,7 +130,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_2_closed( double (*f)(double), d
 
 
 // Calcula a integral por Newton Cotes com o polinômio de interpolação de grau 3 com a abordagem fechada
-Answer Integrate::calculate_by_newton_cotes_deg_3_closed( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_newton_cotes_deg_3_closed( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 	int iterations = 1;
 	int n = 1;
@@ -181,7 +181,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_3_closed( double (*f)(double), d
 
 
 // Calcula a integral por Newton Cotes com o polinômio de interpolação de grau 4 com a abordagem fechada
-Answer Integrate::calculate_by_newton_cotes_deg_4_closed( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_newton_cotes_deg_4_closed( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 	int iterations = 1;
 	int n = 1;
@@ -189,10 +189,17 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_closed( double (*f)(double), d
 
 	double h = ((b-a)/4);
 	double r0 = ((2*h)/45)*( 7*f(a) + 32*f(a+h) + 12*f(a+2*h) + 32*f(a+3*h) +7*f(b));
+	// 0.43 * () 
 	if(debug)
-	{
+	{	
 		std::cout << std::endl <<"[Início de Integração por Newton Cotes, grau 4, fechada]" << std::endl<< std::endl;
 		std::cout << "Iteração 1: "<< std::fixed << std::setprecision(6) << r0 << std::endl<< std::endl;
+		std::cout << "h: " << h << "b :" << b << "         -a :" << -a << std::endl; 
+		std::cout << "f(a): " << f(a);
+		std::cout << "f(a+h): " << f(a+h);
+		std::cout << "f(a+2h): " <<f(a+2*h) ;
+		std::cout << "f(a+3h): " << f(a+3*h);
+		std::cout << "f(b): " << f(b);
 	}
 	
 
@@ -448,7 +455,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_open( double (*f)(double), dou
 
 
 // Calcula a Integral por Gauss Legendre usando 2 pontos
-Answer Integrate::calculate_by_gauss_legendre_2( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_gauss_legendre_2( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
@@ -513,7 +520,7 @@ Answer Integrate::calculate_by_gauss_legendre_2( double (*f)(double), double a, 
 
 
 // Calcula a Integral por Gauss Legendre usando 3 pontos
-Answer Integrate::calculate_by_gauss_legendre_3( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_gauss_legendre_3( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
@@ -584,7 +591,7 @@ Answer Integrate::calculate_by_gauss_legendre_3( double (*f)(double), double a, 
 
 
 // Calcula a Integral por Gauss Legendre usando 4 pontos
-Answer Integrate::calculate_by_gauss_legendre_4( double (*f)(double), double a, double b, double error, bool debug)
+Answer Integrate::calculate_by_gauss_legendre_4( const std::function<double( double )> &f, double a, double b, double error, bool debug)
 {
 
 	int iterations = 1;
@@ -735,7 +742,7 @@ Answer Integrate::calculate_by_gauss_hermite(const std::function<double( double 
 }
 
 // Calcula a Integral Especial por Gauss Laguerre usando 2, 3 ou 4 pontos
-Answer Integrate::calculate_by_gauss_laguerre(double (*f)(double), int n, bool debug)
+Answer Integrate::calculate_by_gauss_laguerre(const std::function<double( double )> &f, int n, bool debug)
 {
 	switch (n)
 	{
@@ -878,7 +885,6 @@ Answer Integrate::calculate_by_singularity_gh(double (*f)(double), double a, dou
 	const double e = std::exp(1.0);
 	const double PI  =3.141592653589793238463;
 
-
  	auto fun = [&](double s) 
 	{ 
 		if(simple){
@@ -892,4 +898,51 @@ Answer Integrate::calculate_by_singularity_gh(double (*f)(double), double a, dou
 	return Integrate::calculate_by_gauss_hermite(fun, n);
 }
 
+// Calculo de intervalos singulares usando a estratégia de Newton-Cotes de polinomio de até 4º grau
+// Parâmetros:
+/*
+	f: Função desejada para integração
+	a: Início do intervalo de integração
+	b: Fim do intervalo de integração
+	n: Grau do polinômio de Newton-Cotes
+	simple: Booleano que, se for Verdadeiro, indica que usaremos a estratégia de Exponencial Simples
+			Caso contrário, usaremos a estratégia de Exponencial Dupla
+*/
 
+
+
+
+
+Answer Integrate::calculate_by_singularity_nc(double (*f)(double), double a, double b, int n, bool simple ,double error,bool debug)
+{
+	const double PI  =3.141592653589793238463;
+
+	double c = 0.5;
+
+ 	auto fun = [&](double s) 
+	{ 
+		if(simple){
+		    // (f((a+b)/2 + ((b-a)/2)tanh(s)) ) * ( (b-a)/(2*cosh(s)^2) )
+			return f( ((a+b)/2) + ((b-a)/2)*std::tanh(s) ) * ( (b-a)/(2*( std::pow(std::cosh(s), 2) ) ) );
+		};
+
+		return f( (a+b)/2 + ((b-a)/2)*std::tanh( (PI/2)*std::sinh(s) ) ) * ( ((b-a)/2)*( (PI*std::cosh(s)) / (2*std::pow(std::cosh( (PI/2)*std::sinh(s) ), 2)  ) ));
+	};
+
+	double r0 = Integrate::calculate_by_gauss_legendre_3(fun, -c, c, error).getResult();;
+	double r1 = r0;
+	int iterations = 0;
+
+	std::cout << "Iteração 0: " << r0 << std::endl;
+
+	do{
+		r0 = r1;
+		c += 0.5;
+		iterations += 1;
+		r1 = Integrate::calculate_by_gauss_legendre_3(fun, -c, c, error, false).getResult();
+
+		
+	} while( std::abs(r1-r0)/r1 > error && std::isfinite(Integrate::calculate_by_gauss_legendre_3(fun, -c-0.5, c+0.5, error, false).getResult()));
+
+	return Answer(r1, c, 0);
+}

@@ -36,16 +36,27 @@ int main()
     Answer sd3 = i.calculate_by_singularity_gh(&fun2, 0, 1, 4, false);
 
 
+    Answer snc1 = i.calculate_by_singularity_nc(&fun2, 0, 1, 4, true);
+    Answer snc2 = i.calculate_by_singularity_nc(&fun2, 0, 1, 4, false);
+
     // Ajustando a precisão pra 6 casas decimais
     std::cout << std::fixed << std::setprecision(7) << std::endl;
     
-
+    /*
     std::cout << "Integral por Singularidade Simples n = 2: " << ss1.getResult() << std::endl;
     std::cout << "Integral por Singularidade Simples n = 3: " << ss2.getResult() << std::endl;
     std::cout << "Integral por Singularidade Simples n = 4: " << ss3.getResult() << std::endl;
     std::cout << "Integral por Singularidade Dupla n = 2: " << sd1.getResult() << std::endl;
     std::cout << "Integral por Singularidade Dupla n = 3: " << sd2.getResult() << std::endl;
     std::cout << "Integral por Singularidade Dupla n = 4: " << sd3.getResult() << std::endl;
+    */
+
+    std::cout << "Integral por Singularidade Newton Cotes Simples: " << snc1.getResult() << std::endl;
+    std::cout << "C: " << snc1.getIterations() << std::endl;
+    std::cout << "Integral por Singularidade Newton Cotes Dupla: " << snc2.getResult() << std::endl;
+    std::cout << "C: " << snc2.getIterations() << std::endl;
+
+        
     return 0;
 
 }
