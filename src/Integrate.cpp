@@ -194,12 +194,7 @@ Answer Integrate::calculate_by_newton_cotes_deg_4_closed( const std::function<do
 	{	
 		std::cout << std::endl <<"[Início de Integração por Newton Cotes, grau 4, fechada]" << std::endl<< std::endl;
 		std::cout << "Iteração 1: "<< std::fixed << std::setprecision(6) << r0 << std::endl<< std::endl;
-		std::cout << "h: " << h << "b :" << b << "         -a :" << -a << std::endl; 
-		std::cout << "f(a): " << f(a);
-		std::cout << "f(a+h): " << f(a+h);
-		std::cout << "f(a+2h): " <<f(a+2*h) ;
-		std::cout << "f(a+3h): " << f(a+3*h);
-		std::cout << "f(b): " << f(b);
+		
 	}
 	
 
@@ -919,6 +914,7 @@ Answer Integrate::calculate_by_singularity_nc(double (*f)(double), double a, dou
 
 	double c = 0.5;
 
+	
  	auto fun = [&](double s) 
 	{ 
 		if(simple){
@@ -929,20 +925,23 @@ Answer Integrate::calculate_by_singularity_nc(double (*f)(double), double a, dou
 		return f( (a+b)/2 + ((b-a)/2)*std::tanh( (PI/2)*std::sinh(s) ) ) * ( ((b-a)/2)*( (PI*std::cosh(s)) / (2*std::pow(std::cosh( (PI/2)*std::sinh(s) ), 2)  ) ));
 	};
 
-	double r0 = Integrate::calculate_by_gauss_legendre_3(fun, -c, c, error).getResult();;
+	double r0 = Integrate::calculate_by_newton_cotes_deg_4_closed(fun, -c, c, error).getResult();
+	
 	double r1 = r0;
+	double temp;
 	int iterations = 0;
 
-	std::cout << "Iteração 0: " << r0 << std::endl;
-
 	do{
+		temp = r0;
 		r0 = r1;
 		c += 0.5;
 		iterations += 1;
-		r1 = Integrate::calculate_by_gauss_legendre_3(fun, -c, c, error, false).getResult();
-
+		r1 = Integrate::calculate_by_newton_cotes_deg_4_closed(fun, -c, c, error, false).getResult();
+		if( !std::isfinite(r1) )
+			return Answer(temp, c-0.5, 0);
 		
-	} while( std::abs(r1-r0)/r1 > error && std::isfinite(Integrate::calculate_by_gauss_legendre_3(fun, -c-0.5, c+0.5, error, false).getResult()));
+	} while( std::abs(r1-r0)/r1);
 
 	return Answer(r1, c, 0);
+
 }

@@ -21,26 +21,38 @@ double fun2( double x )
     return 1/(std::sqrt(x));
 }
 
+double fun3( double x )
+{
+    return 1/(std::pow(x*x, 1.0/3.0));
+}
+double fun4( double x )
+{
+    return 1/(std::sqrt(4 - x*x));
+}
+
 int main() 
 {
+    // Ajustando a precisão pra 6 casas decimais
+    std::cout << std::fixed << std::setprecision(7) << std::endl;
 
 
     Integrate i;
 
+    Answer pt1 = i.calculate_by_singularity_nc(&fun3, -1, 0, 4, false);
+    Answer pt2 = i.calculate_by_singularity_nc(&fun3, 0, 1, 4, false);
 
-    Answer ss1 = i.calculate_by_singularity_gh(&fun2, 0, 1, 2, true);
-    Answer ss2 = i.calculate_by_singularity_gh(&fun2, 0, 1, 3, true);
-    Answer ss3 = i.calculate_by_singularity_gh(&fun2, 0, 1, 4, true);
-    Answer sd1 = i.calculate_by_singularity_gh(&fun2, 0, 1, 2, false);
-    Answer sd2 = i.calculate_by_singularity_gh(&fun2, 0, 1, 3, false);
-    Answer sd3 = i.calculate_by_singularity_gh(&fun2, 0, 1, 4, false);
+    std::cout << "Somando: " << pt1.getResult() + pt2.getResult() << std::endl;
+    std::cout << "x2: " << 2*pt2.getResult() << std::endl;
+
+    Answer gt1 = i.calculate_by_singularity_nc(&fun4, -2, 0, 4, true);
+    Answer gt2 = i.calculate_by_singularity_nc(&fun4, -2, 0, 4, false);
+
+    std::cout << "Simples: " << gt1.getResult() << std::endl;
+    std::cout << "C: " << gt1.getIterations() << std::endl << std::endl;
+    std::cout << "Duplo: " << gt2.getResult() << std::endl;
+    std::cout << "C: " << gt2.getIterations() << std::endl;
 
 
-    Answer snc1 = i.calculate_by_singularity_nc(&fun2, 0, 1, 4, true);
-    Answer snc2 = i.calculate_by_singularity_nc(&fun2, 0, 1, 4, false);
-
-    // Ajustando a precisão pra 6 casas decimais
-    std::cout << std::fixed << std::setprecision(7) << std::endl;
     
     /*
     std::cout << "Integral por Singularidade Simples n = 2: " << ss1.getResult() << std::endl;
@@ -51,10 +63,9 @@ int main()
     std::cout << "Integral por Singularidade Dupla n = 4: " << sd3.getResult() << std::endl;
     */
 
-    std::cout << "Integral por Singularidade Newton Cotes Simples: " << snc1.getResult() << std::endl;
-    std::cout << "C: " << snc1.getIterations() << std::endl;
-    std::cout << "Integral por Singularidade Newton Cotes Dupla: " << snc2.getResult() << std::endl;
-    std::cout << "C: " << snc2.getIterations() << std::endl;
+
+
+
 
         
     return 0;
