@@ -1,4 +1,5 @@
 #include "Eigenvectors.h"
+//#include "LU.h"
 #include <iostream>
 #include <math.h>
 
@@ -21,6 +22,19 @@ void Eigenvectors::printVector(std::vector<double> v)
 	}
 	std::cout << " )" << std::endl;
 }
+
+// Método que imprime uma matriz, já que vector não é diretamente compatível com std::cout
+void Eigenvectors::printMatrix(std::vector<std::vector<double>> A)
+{
+	std::cout << "[ " << std::endl;
+	for(uint i = 0; i < A.size(); i++)
+	{
+		Eigenvectors::printVector(A[i]);
+	}
+	std::cout << " ]" << std::endl;
+}
+
+
 
 // Método que recebe um vetor e o normaliza, retornando o vetor normalizado
 std::vector<double> Eigenvectors::normalizeVector(std::vector<double> v)

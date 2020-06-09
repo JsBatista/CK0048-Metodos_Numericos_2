@@ -40,37 +40,7 @@ int main()
 	// Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
 
-    // Calculando para a Matriz 1 por Potência Regular
-    Answer resp1 = av.calculateByRegularPower(A1, chute1);
-
-    // Calculando para a Matriz 2 por Potência Regular
-    Answer resp2 = av.calculateByRegularPower(A2, chute2);
-
-	std::cout << "_______________________________________________________________" << std::endl << "Matriz 1:" << std::endl << std::endl;	
-    if(!resp1.getErrorFlag())
-    {
-	    std::cout << "Autovalor: " << resp1.getEigenvalue() << std::endl;
-		std::cout << "Autovetor: ";
-		av.printVector(resp1.getEigenvector());
-		std::cout << "Iterações: " << resp1.getIterations() << std::endl << std::endl << std::endl;
-    } else
-    {
-    	std::cout << "Um erro ocorreu ao executar o método!" << std::endl;
-    	std::cout << resp1.getErrorMessage() << std::endl;
-    }
-
-    std::cout << "_______________________________________________________________" << std::endl << "Matriz 2:" << std::endl << std::endl;
-    if(!resp2.getErrorFlag())
-    {
-		std::cout << "Autovalor: " << resp2.getEigenvalue() << std::endl;
-		std::cout << "Autovetor: ";
-		av.printVector(resp2.getEigenvector());
-		std::cout << "Iterações: " << resp2.getIterations() << std::endl << std::endl << std::endl;
-    } else
-    {
-    	std::cout << "Um erro ocorreu ao executar o método!" << std::endl;
-    	std::cout << resp2.getErrorMessage() << std::endl;
-    }
+    av.printMatrix(A1);
 
     return 0;
 

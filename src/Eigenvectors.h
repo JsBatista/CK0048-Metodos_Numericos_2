@@ -15,5 +15,6 @@ class Eigenvectors
 	public:
 		Eigenvectors();		
 		void printVector(std::vector<double> v);
+		void printMatrix(std::vector<std::vector<double>> A);
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 };
