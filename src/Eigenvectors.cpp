@@ -1,12 +1,12 @@
-#include "Autovectors.h"
+#include "Eigenvectors.h"
 #include <iostream>
 #include <math.h>
 
-Autovectors::Autovectors(){
+Eigenvectors::Eigenvectors(){
 
 }
 
-void Autovectors::printVector(std::vector<double> v)
+void Eigenvectors::printVector(std::vector<double> v)
 {
 	std::cout << "( ";
 	for(uint i = 0; i < v.size(); i++)
@@ -20,7 +20,7 @@ void Autovectors::printVector(std::vector<double> v)
 	std::cout << " )" << std::endl;
 }
 
-std::vector<double> Autovectors::normalizeVector(std::vector<double> v)
+std::vector<double> Eigenvectors::normalizeVector(std::vector<double> v)
 {
 
 	double norm = 0;
@@ -41,7 +41,7 @@ std::vector<double> Autovectors::normalizeVector(std::vector<double> v)
 
 }
 
-std::vector<double> Autovectors::vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A){
+std::vector<double> Eigenvectors::vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A){
 	std::vector<double> mult = v;
 
 	double sum;
@@ -59,7 +59,7 @@ std::vector<double> Autovectors::vectorMatrixMultiplication(std::vector<double> 
 	return mult;
 }
 
-double Autovectors::dotProduct(std::vector<double> v1, std::vector<double> v2)
+double Eigenvectors::dotProduct(std::vector<double> v1, std::vector<double> v2)
 {
 	double sum = 0;
 
@@ -71,7 +71,7 @@ double Autovectors::dotProduct(std::vector<double> v1, std::vector<double> v2)
 	return sum;
 }
 
-Answer Autovectors::calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error)
+Answer Eigenvectors::calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error)
 {
 
 
@@ -94,20 +94,20 @@ Answer Autovectors::calculateByRegularPower(std::vector<std::vector<double>> A, 
 		// Passo 5
 		vkOld = vkNew;
 		// Passo 6
-		x1Old = Autovectors::normalizeVector(vkOld);
+		x1Old = Eigenvectors::normalizeVector(vkOld);
 
 		// Passo 7
-		vkNew = Autovectors::vectorMatrixMultiplication(x1Old, A);
+		vkNew = Eigenvectors::vectorMatrixMultiplication(x1Old, A);
 
 		// Passo 8
-		lambdaNew = Autovectors::dotProduct(x1Old, vkNew);
+		lambdaNew = Eigenvectors::dotProduct(x1Old, vkNew);
 
 	} // Passo 9
 	while( std::abs((lambdaNew - lambdaOld)/lambdaNew) > error );
 	
 	std::cout << "Autovalor: " << lambdaNew << std::endl;
 	std::cout << "Autovetor: ";
-	Autovectors::printVector(x1Old);
+	Eigenvectors::printVector(x1Old);
 	std::cout << std::endl;
 
 

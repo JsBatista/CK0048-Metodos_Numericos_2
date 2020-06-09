@@ -2,7 +2,7 @@
 #include "Answer.h"
 #include <vector>
 
-class Autovectors
+class Eigenvectors
 {
 
 	private:
@@ -13,6 +13,6 @@ class Autovectors
 
 
 	public:
-		Autovectors();		
+		Eigenvectors();		
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 };

@@ -18,7 +18,7 @@ class Answer{
         // Para métodos que retornam um double
         Answer(double  result, int iterations, double time);
         // Para métodos que retornam autovetores e autovalores
-        Answer(std::vector<double> autovector,double autovalue, int iterations, double time);
+        Answer(std::vector<double> eigenvector,double eigenvalue, int iterations, double time);
 
         Answer(string getErrorMessage);
         double getResult();

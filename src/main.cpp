@@ -4,7 +4,7 @@
 // Arquivos do programa
 #include "Answer.h"
 #include "Integrate.h"
-#include "Autovectors.h"
+#include "Eigenvectors.h"
 // Necessário para funções matemáticas (nesse arquivo é a seno e a potencia)
 #include <math.h>
 // Necessário para manipulação de Strings
@@ -27,7 +27,7 @@ int main()
         {1, 2, 2, 4, 5}
     };
 
-    Autovectors av;
+    Eigenvectors av;
 
     av.calculateByRegularPower(A, vetor1);
 
