@@ -59,7 +59,29 @@ void LU::choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int
 // Faz a permutação mas não registra nada no vetor de permutação
 void LU::fakePermute(std::vector<std::vector<double>> &A, int k, int r)
 {
-    // Trocamos os dois elementos
+    // Fazemos a permutação
     for(uint j = 0; j < A.size(); j++)
         std::swap(A[k][j], A[r][j]);
+}
+
+
+// Faz a permutação de duas linhas da matriz A e registra a troca no vetor de permutação p
+void LU::permute(std::vector<std::vector<double>> &A, std::vector<int> &p, int k, int r){
+    // Registra a troca no vetor de permutação
+    std::swap(p[k], p[r]);
+
+    // Fazemos a permutação
+    for(uint j = 0; j < A.size(); j++)
+        std::swap(A[k][j], A[r][j]);
+}
+
+
+// Faz a permutação no vetor b
+void LU::permute(std::vector<double> &b, std::vector<int> &p, int k, int r)
+{    
+    // Registra a troca no array de permutação
+    std::swap(p[k], p[r]);
+
+    // Troca os elementos no vetor b
+    std::swap(b[k], b[r]);
 }
