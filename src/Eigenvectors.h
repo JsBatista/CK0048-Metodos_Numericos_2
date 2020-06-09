@@ -9,6 +9,7 @@ class Eigenvectors
 		std::vector<double> normalizeVector(std::vector<double> v);
 		std::vector<double> vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A);
 		double dotProduct(std::vector<double> v1, std::vector<double> v2);
+		bool isSquareMatrix(std::vector<std::vector<double>> A);
 
 
 	public:

@@ -2,10 +2,12 @@
 #include <iostream>
 #include <math.h>
 
+// Construtor padrão
 Eigenvectors::Eigenvectors(){
 
 }
 
+// Método que imprime um vetor, já que vector não é diretamente compatível com std::cout
 void Eigenvectors::printVector(std::vector<double> v)
 {
 	std::cout << "( ";
@@ -20,6 +22,7 @@ void Eigenvectors::printVector(std::vector<double> v)
 	std::cout << " )" << std::endl;
 }
 
+// Método que recebe um vetor e o normaliza, retornando o vetor normalizado
 std::vector<double> Eigenvectors::normalizeVector(std::vector<double> v)
 {
 
@@ -41,6 +44,11 @@ std::vector<double> Eigenvectors::normalizeVector(std::vector<double> v)
 
 }
 
+// Método que realiza a multiplicação de um vetor por uma matriz, ou vice versa, contanto que ambos sejam compatíveis
+// ex: Se a matrix for 5x3 e o vetor for 3x1, a multiplicação será feita Matriz x Vetor
+//     Se a matriz for 5x3 e o vetor for 5x1, a multiplicação será feita Vetor x Matriz
+// Como esse método só é usado de maneira controlada dentro do código que receberá uma matriz quadrada e um vetor de 
+// tamanho compatível, qualquer outro caso resultará em um erro
 std::vector<double> Eigenvectors::vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A){
 	std::vector<double> mult = v;
 
@@ -59,6 +67,9 @@ std::vector<double> Eigenvectors::vectorMatrixMultiplication(std::vector<double>
 	return mult;
 }
 
+// Faz o produto escalar de dois vetores de mesma dimensão
+// Colocar dois vetores de dimensões diferentes irá resultar em um erro
+// Usado apenas de maneira controlada em funções para evitar o erro
 double Eigenvectors::dotProduct(std::vector<double> v1, std::vector<double> v2)
 {
 	double sum = 0;
@@ -71,40 +82,67 @@ double Eigenvectors::dotProduct(std::vector<double> v1, std::vector<double> v2)
 	return sum;
 }
 
+// Verifica se uma matriz é quadrada, retornando True ou False
+bool Eigenvectors::isSquareMatrix(std::vector<std::vector<double>> A)
+{
+	uint tam = A.size();
+	for(uint i = 0; i < tam; i++){
+		if(A[i].size() != tam)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+// Calcula o Autovalor e o seu Autovetor associado pelo método da Potência Regular.
 Answer Eigenvectors::calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error)
 {
+	// Fazemos algumas checagens de erro antes de progredir com o programa:
+	if(!Eigenvectors::isSquareMatrix(A) )
+	{
+		return Answer("Dados de entrada não compatíveis com esse método! A matriz recebida deve ser quadrada!");
+	}
 
+	if(A.size() != v0.size())
+	{
+		return Answer("Dados de entrada não compatíveis com esse método! O vetor recebido não tem a mesma dimensão que as linhas e colunas da matriz recebida!");
+	}
 
-	// Passo 2
+	// Inicializamos o contador
+	uint cont = 0;
+
+	// Passo 2 do algoritmo
 	double lambdaNew = 0;
 	double lambdaOld;
 
-
-
-	// Passo 3
+	// Passo 3 do algoritmo
 	std::vector<double> vkNew = v0;
+
+	// Inicializando Vk velho e X1 velho fora do laço para que seus valores não sejam sobrescritos nas iterações
 	std::vector<double> vkOld;
 	std::vector<double> x1Old;	
 
 	// Inicialização do laço para passos 4 à 9
 	do
-	{
-		// Passo 4
+	{	
+		// Incremento do contador
+		cont ++;
+		// Passo 4 do algoritmo
 		lambdaOld = lambdaNew;
-		// Passo 5
+		// Passo 5 do algoritmo
 		vkOld = vkNew;
-		// Passo 6
+		// Passo 6 do algoritmo
 		x1Old = Eigenvectors::normalizeVector(vkOld);
-
-		// Passo 7
+		// Passo 7 do algoritmo
 		vkNew = Eigenvectors::vectorMatrixMultiplication(x1Old, A);
-
-		// Passo 8
+		// Passo 8 do algoritmo
 		lambdaNew = Eigenvectors::dotProduct(x1Old, vkNew);
 
-	} // Passo 9
+	} // Passo 9 do algoritmo (checagem de erro)
 	while( std::abs((lambdaNew - lambdaOld)/lambdaNew) > error );
 
-	return Answer(x1Old,lambdaNew, 0, 0);
+	// Retornando o Autovalor e o seu Autovetor associado
+	return Answer(x1Old,lambdaNew, cont, 0);
 
 }
