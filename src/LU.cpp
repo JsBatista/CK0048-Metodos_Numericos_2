@@ -32,7 +32,8 @@ void LU::truncate(double &x)
 }
 
 
-void LU::choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int &r){
+void LU::choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int &r)
+{
 
     double pivot = std::fabs(A[k][k]);
     // Se o elemento da diagonal atual for o pivô real, vamos mantê-lo como pivô
@@ -41,9 +42,11 @@ void LU::choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int
     r = k;
 
     // Fazemos a busca em toda matriz A
-    for(uint i = k+1; i < A.size(); i++){
+    for(uint i = k+1; i < A.size(); i++)
+    {
         // Se acharmos alguém maior que o pivô
-        if( std::fabs(A[i][k]) > pivot ){
+        if( std::fabs(A[i][k]) > pivot )
+        {
             // Atualizamos o pivô para ele
             pivot = std::fabs(A[i][k]);
             pv = A[i][k];
@@ -52,3 +55,11 @@ void LU::choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int
         }
     }
 };
+
+// Faz a permutação mas não registra nada no vetor de permutação
+void LU::fakePermute(std::vector<std::vector<double>> &A, int k, int r)
+{
+    // Trocamos os dois elementos
+    for(uint j = 0; j < A.size(); j++)
+        std::swap(A[k][j], A[r][j]);
+}

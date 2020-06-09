@@ -11,4 +11,5 @@ class LU{
 
         void truncate(double &x);
         void choose_pivot(std::vector<std::vector<double>> A, int k, double &pv, int &r);
+        void fakePermute(std::vector<std::vector<double>> &A, int k, int r);
 };
