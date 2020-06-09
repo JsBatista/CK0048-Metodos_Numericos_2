@@ -11,6 +11,8 @@ class Answer{
         double time;
         bool errorFlag;
         string errorMessage;
+        std::vector<double> eigenvector;
+        double eigenvalue;
     
     public:
         Answer();
@@ -26,4 +28,6 @@ class Answer{
         double getTime();
         bool getErrorFlag();
         string getErrorMessage();
+        std::vector<double> getEigenvector();
+        double getEigenvalue();
 };

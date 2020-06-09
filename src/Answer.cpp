@@ -16,6 +16,15 @@ Answer::Answer(double  result, int iterations, double time){
     this->errorMessage = "Nenhum erro ocorreu.";
 }
 
+Answer::Answer(std::vector<double> eigenvector,double eigenvalue, int iterations, double time){
+    this->eigenvector = eigenvector;
+    this->eigenvalue = eigenvalue;
+    this->time = time;
+    this->iterations = iterations;
+    this->errorFlag = false;
+    this->errorMessage = "Nenhum erro ocorreu.";
+}
+
 
 Answer::Answer(string errorMessage){
     this->result = -1;
@@ -29,18 +38,28 @@ double Answer::getResult(){
     return result;
 }
 
-int Answer:: getIterations(){
+int Answer::getIterations(){
     return iterations;
 }
 
-double Answer:: getTime(){
+double Answer::getTime(){
     return time;
 }
 
-bool Answer:: getErrorFlag(){
+bool Answer::getErrorFlag(){
     return errorFlag;
 }
 
-string Answer:: getErrorMessage(){
+string Answer::getErrorMessage(){
     return errorMessage;
+}
+
+
+std::vector<double> Answer::getEigenvector(){
+    return eigenvector;
+}
+
+
+double Answer::getEigenvalue(){
+    return eigenvalue;
 }

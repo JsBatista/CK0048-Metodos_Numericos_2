@@ -29,9 +29,13 @@ int main()
 
     Eigenvectors av;
 
-    av.calculateByRegularPower(A, vetor1);
+    Answer resp = av.calculateByRegularPower(A, vetor1);
 
-    std::cout << "Hello World" << std::endl;
+	std::cout << "Autovalor: " << resp.getEigenvalue() << std::endl;
+	std::cout << "Autovetor: ";
+	av.printVector(resp.getEigenvector());
+	std::cout << std::endl;
+
     return 0;
 
 }

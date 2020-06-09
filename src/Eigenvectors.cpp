@@ -104,15 +104,7 @@ Answer Eigenvectors::calculateByRegularPower(std::vector<std::vector<double>> A,
 
 	} // Passo 9
 	while( std::abs((lambdaNew - lambdaOld)/lambdaNew) > error );
-	
-	std::cout << "Autovalor: " << lambdaNew << std::endl;
-	std::cout << "Autovetor: ";
-	Eigenvectors::printVector(x1Old);
-	std::cout << std::endl;
 
-
-
-	return Answer();
-	//return Answer(lambdaNew, x1Old, 0, 0);
+	return Answer(x1Old,lambdaNew, 0, 0);
 
 }

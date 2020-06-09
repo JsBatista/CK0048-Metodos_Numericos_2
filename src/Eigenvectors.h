@@ -6,7 +6,6 @@ class Eigenvectors
 {
 
 	private:
-		void printVector(std::vector<double> v);
 		std::vector<double> normalizeVector(std::vector<double> v);
 		std::vector<double> vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A);
 		double dotProduct(std::vector<double> v1, std::vector<double> v2);
@@ -14,5 +13,6 @@ class Eigenvectors
 
 	public:
 		Eigenvectors();		
+		void printVector(std::vector<double> v);
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 };
