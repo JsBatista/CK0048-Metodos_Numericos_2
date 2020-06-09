@@ -8,4 +8,6 @@ class LU{
 
     public:
         LU();
+        
+        void truncate(double &x);
 };

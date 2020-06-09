@@ -24,3 +24,9 @@ bool LU::isTriangularMatrix(std::vector<std::vector<double>> A)
     }
     return true;
 }
+
+void LU::truncate(double &x)
+{
+    if(std::fabs(x) < 1e-6)
+        x = 0;
+}

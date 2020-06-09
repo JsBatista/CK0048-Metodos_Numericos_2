@@ -5,6 +5,7 @@
 #include "Answer.h"
 #include "Integrate.h"
 #include "Eigenvectors.h"
+#include "LU.h"
 // Necessário para funções matemáticas (nesse arquivo é a seno e a potencia)
 #include <math.h>
 // Necessário para manipulação de Strings
@@ -12,6 +13,7 @@
 #include <functional>
 // Necessário para manipulação de vetores
 #include <vector>
+
 
 
 int main() 
@@ -39,6 +41,12 @@ int main()
 
 	// Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
+
+    LU lu;
+
+    double numero = 0.000000000000000001;
+    lu.truncate(numero);
+    std::cout << numero;
 
     av.printMatrix(A1);
 
