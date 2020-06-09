@@ -18,4 +18,6 @@ class LU{
         void permute(std::vector<double> &b, std::vector<int> &p, int k, int r);
 
         std::vector<double> retroativeIterations(std::vector<std::vector<double>> A, std::vector<double> b);
+        std::vector<double> sucessiveIterations(std::vector<std::vector<double>> A, std::vector<double> b);
+
 };

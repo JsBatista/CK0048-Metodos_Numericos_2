@@ -87,7 +87,6 @@ void LU::permute(std::vector<double> &b, std::vector<int> &p, int k, int r)
 }
 
 // Resolve um sistema de equações por Iterações Retroativas
-
 std::vector<double> LU::retroativeIterations(std::vector<std::vector<double>> A, std::vector<double> b)
 {
     // Cria e inicializa o vetor solução com N zeros
@@ -109,9 +108,33 @@ std::vector<double> LU::retroativeIterations(std::vector<std::vector<double>> A,
         {
             sum += A[i][j] * x[j];
         }    
-        // Registra o valor calculado no vetor X
+        // Registra o valor calculado no vetor solução X
         x[i] = (b[i] - sum) / A[i][i];
     }
 
     return x;
+}
+
+// Resolve um sistema de equações por Iterações Sucessivas
+std::vector<double> LU::sucessiveIterations(std::vector<std::vector<double>> A, std::vector<double> b)
+{
+    // Cria e inicializa o vetor solução com N zeros
+    std::vector<double> x;
+    for(uint i = 0; i < b.size(); i++)
+        x.push_back(0);
+
+    // Itera sobre a matriz, linha por linha, calculando os Xs da resposta
+    double sum;
+
+    for(uint i = 0; i < b.size(); i++){
+        sum = 0;
+        for(uint j = 0; j < i; j++)
+        {
+            sum += A[i][j]*x[j];
+        }
+        // Registra o valor calculado no vetor solução X
+        x[i] = b[i] - sum;
+    }
+
+    return x;    
 }
