@@ -1,5 +1,5 @@
 #include "Eigenvectors.h"
-//#include "LU.h"
+#include "LU.h"
 #include <iostream>
 #include <math.h>
 
@@ -159,4 +159,51 @@ Answer Eigenvectors::calculateByRegularPower(std::vector<std::vector<double>> A,
 	// Retornando o Autovalor e o seu Autovetor associado
 	return Answer(x1Old,lambdaNew, cont, 0);
 
+}
+
+
+Answer Eigenvectors::calculateByInversePower(std::vector<std::vector<double>> A, std::vector<double> v0, double error)
+{
+	LU lu;
+	// Passo 2
+	std::vector<std::vector<std::vector<double>>> lau = lu.LU_factoration(A);
+
+	// Passo 3
+	double lambda1New = 0;
+	double lambda1Old;
+
+
+	//Passo 4
+	std::vector<double> vkNew = v0;
+	std::vector<double> vkOld;
+	std::vector<double> x1Old;
+	
+	// Inicializamos o contador
+	uint cont = 0;
+
+	do
+	{
+		// Incremento do contador
+		cont ++;
+		// Passo 5
+		lambda1Old = lambda1New;
+		// Passo 6
+		vkOld = vkNew;
+		// Passo 7
+		x1Old = Eigenvectors::normalizeVector(vkOld);
+		// Passo 8
+		vkNew = lu.LU_partial_pivoting(A,x1Old);
+		// Passo 9
+		lambda1New = Eigenvectors::dotProduct(x1Old, vkNew);
+		std::cout << "Lambda: " << lambda1New << std::endl;
+
+	} while(std::abs((lambda1New - lambda1Old)/lambda1New) > error); // Passo 10 (checagem de erro)
+
+	// Passo 11
+	double lambdaN = 1/lambda1New;
+	// Passo 12
+	std::vector<double> xn = x1Old;
+
+	// Retornando o Autovalor e o seu Autovetor associado
+	return Answer(xn,lambdaN, cont, 0);
 }

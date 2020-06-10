@@ -139,7 +139,7 @@ std::vector<double> LU::sucessiveIterations(std::vector<std::vector<double>> A, 
     return x;    
 }
 
-Answer LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<double> b)
+std::vector<double> LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<double> b)
 {
 	std::vector<int> p;
     std::vector<std::vector<double>> L;
@@ -166,7 +166,7 @@ Answer LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<d
         LU::choose_pivot(A, k, pivot, r);
 
         if(pivot == 0)
-            return Answer("A matriz é singular!");
+            return {};
         
         if(k != r){
             LU::permute(A, p, k, r);
@@ -200,7 +200,7 @@ Answer LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<d
 
     std::vector<double> y = LU::sucessiveIterations(A, blin);
     std::vector<double> x = LU::retroativeIterations(A, y);
-    return Answer(x, 0.0, 0,  0.0);
+    return x;
 }
 
 
