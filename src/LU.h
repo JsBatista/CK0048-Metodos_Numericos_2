@@ -20,4 +20,7 @@ class LU{
         std::vector<double> retroativeIterations(std::vector<std::vector<double>> A, std::vector<double> b);
         std::vector<double> sucessiveIterations(std::vector<std::vector<double>> A, std::vector<double> b);
 
+        Answer LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<double> b);
+        std::vector<std::vector<std::vector<double>>> LU_factoration(std::vector<std::vector<double>> A);
+        
 };

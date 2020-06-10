@@ -138,3 +138,124 @@ std::vector<double> LU::sucessiveIterations(std::vector<std::vector<double>> A, 
 
     return x;    
 }
+
+Answer LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<double> b)
+{
+	std::vector<int> p;
+    std::vector<std::vector<double>> L;
+    std::vector<std::vector<double>> U;
+
+    for(uint i = 0; i < A.size(); i++)
+    {
+        L.push_back({});
+        U.push_back({});
+        for(uint j = 0; j < A.size(); j++)
+        {
+            L[i].push_back(0);
+            U[i].push_back(0);
+        }
+    }
+
+    for(uint i = 0; i < b.size(); i++)
+        p.push_back(i);
+    
+    for(int k = 0; k < int(b.size()); k++)
+    {
+        double pivot;
+        int r;
+        LU::choose_pivot(A, k, pivot, r);
+
+        if(pivot == 0)
+            return Answer("A matriz é singular!");
+        
+        if(k != r){
+            LU::permute(A, p, k, r);
+            LU::fakePermute(L, k, r);
+        }
+        double m;
+        for(int i = 0; i < k+1; i++)
+        {
+            U[i][k] = A[i][k];
+        }
+        for(uint i = k+1; i < b.size(); i++)
+        {
+            m = A[i][k]/A[k][k];
+            LU::truncate(m);
+            A[i][k] = m;
+            L[i][k] = m;
+            for(uint j = k+1; j < b.size(); j++)
+            {
+                A[i][j] = A[i][j] - m*A[k][j]; 
+                LU::truncate(A[i][j]);
+            }
+        }
+    }
+    std::vector<double> blin;
+    int r;
+    for(uint i = 0; i < b.size(); i++)
+    {
+        r = p[i];
+        blin.push_back(b[r]);
+    }
+
+    std::vector<double> y = LU::sucessiveIterations(A, blin);
+    std::vector<double> x = LU::retroativeIterations(A, y);
+    return Answer(x, 0.0, 0,  0.0);
+}
+
+
+std::vector<std::vector<std::vector<double>>> LU::LU_factoration(std::vector<std::vector<double>> A)
+{	
+
+	std::vector<int> p;
+    std::vector<std::vector<double>> L;
+    std::vector<std::vector<double>> U;
+
+    for(uint i = 0; i < A.size(); i++)
+    {
+        L.push_back({});
+        U.push_back({});
+        for(uint j = 0; j < A.size(); j++)
+        {
+            L[i].push_back(0);
+            U[i].push_back(0);
+        }
+    }
+
+    for(uint i = 0; i < A.size(); i++)
+        p.push_back(i);
+    
+    for(int k = 0; k < int(A.size()); k++)
+    {
+        double pivot;
+        int r;
+        LU::choose_pivot(A, k, pivot, r);
+
+        if(pivot == 0)
+            return {{},{}};
+        
+        if(k != r){
+            LU::permute(A, p, k, r);
+            LU::fakePermute(L, k, r);
+        }
+        double m;
+        for(int i = 0; i < k+1; i++)
+        {
+            U[i][k] = A[i][k];
+        }
+        for(uint i = k+1; i < A.size(); i++)
+        {
+            m = A[i][k]/A[k][k];
+            LU::truncate(m);
+            A[i][k] = m;
+            L[i][k] = m;
+            for(uint j = k+1; j < A.size(); j++)
+            {
+                A[i][j] = A[i][j] - m*A[k][j]; 
+                LU::truncate(A[i][j]);
+            }
+        }
+    }
+
+    return {L,U};
+}
