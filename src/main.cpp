@@ -18,7 +18,6 @@
 
 int main() 
 {
-
 	// Vetores de chute    
     std::vector<double> chute1 = {1,2,3};
     std::vector<double> chute2 = {1,2,3,4,5};
@@ -39,17 +38,12 @@ int main()
         {1, 2, 2, 4, 5}
     };
 
-	// Inicializando nosso objeto de cálculo de autovetores e autovalores
-    Eigenvectors av;
 
     LU lu;
+    Eigenvectors av;
 
-    double numero = 0.000000000000000001;
-    lu.truncate(numero);
-    std::cout << numero;
 
-    av.printMatrix(A1);
-
+    
     return 0;
 
 }

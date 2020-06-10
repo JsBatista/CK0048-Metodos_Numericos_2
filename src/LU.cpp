@@ -204,13 +204,13 @@ Answer LU::LU_partial_pivoting(std::vector<std::vector<double>> A, std::vector<d
 }
 
 
+// Decompomos a matriz A em duas latrizes L e U
 std::vector<std::vector<std::vector<double>>> LU::LU_factoration(std::vector<std::vector<double>> A)
-{	
-
-	std::vector<int> p;
+{ 
     std::vector<std::vector<double>> L;
     std::vector<std::vector<double>> U;
 
+    // Inicializamos L e U com zeros
     for(uint i = 0; i < A.size(); i++)
     {
         L.push_back({});
@@ -221,41 +221,42 @@ std::vector<std::vector<std::vector<double>>> LU::LU_factoration(std::vector<std
             U[i].push_back(0);
         }
     }
+  
+    // Decompomos A em L e U
+    for (uint i = 0; i < A.size(); i++) 
+    { 
+ 		 
+        // U
+        for (uint k = i; k < A.size(); k++) 
+        { 
+  				
+            // Soma dos produtos 
+            double sum = 0; 
+            for (uint j = 0; j < i; j++) 
+                sum += (L[i][j] * U[j][k]); 
+  
+            // Ajustando o valor de U(i,k)
+            U[i][k] = A[i][k] - sum; 
+        } 
+  		
+        // L
+        for (uint k = i; k < A.size(); k++) 
+        { 
+            if (i == k) 
+                L[i][i] = 1; // Fazemos com que a diagonal de L seja 1 
+            else 
+            { 
+                // Soma dos produtos 
+                double sum = 0; 
+                for (uint j = 0; j < i; j++) 
+                    sum += (L[k][j] * U[j][i]); 
+  
+                // Ajustando o valor de L(k,i) 
+                L[k][i] = (A[k][i] - sum) / U[i][i]; 
+            } 
+        } 
 
-    for(uint i = 0; i < A.size(); i++)
-        p.push_back(i);
-    
-    for(int k = 0; k < int(A.size()); k++)
-    {
-        double pivot;
-        int r;
-        LU::choose_pivot(A, k, pivot, r);
-
-        if(pivot == 0)
-            return {{},{}};
-        
-        if(k != r){
-            LU::permute(A, p, k, r);
-            LU::fakePermute(L, k, r);
-        }
-        double m;
-        for(int i = 0; i < k+1; i++)
-        {
-            U[i][k] = A[i][k];
-        }
-        for(uint i = k+1; i < A.size(); i++)
-        {
-            m = A[i][k]/A[k][k];
-            LU::truncate(m);
-            A[i][k] = m;
-            L[i][k] = m;
-            for(uint j = k+1; j < A.size(); j++)
-            {
-                A[i][j] = A[i][j] - m*A[k][j]; 
-                LU::truncate(A[i][j]);
-            }
-        }
-    }
-
-    return {L,U};
-}
+    } 
+	return {L, U};
+  
+} 
