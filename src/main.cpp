@@ -47,10 +47,10 @@ int main()
     Eigenvectors av;
 
     // Calculando para a Matriz 1 por Potência Inversa
-    Answer resp1 = av.calculateByDisplacementPower(A3, chute1, -15);
+    Answer resp1 = av.calculateByDisplacementPower(A2, chute2, 5);
 
 
-    std::cout << "_______________________________________________________________" << std::endl << "Matriz 1:" << std::endl << std::endl;   
+    std::cout << "_______________________________________________________________" << std::endl << "Matriz 2:" << std::endl << std::endl;   
     if(!resp1.getErrorFlag())
     {
         std::cout << "Autovalor: " << resp1.getEigenvalue() << std::endl;

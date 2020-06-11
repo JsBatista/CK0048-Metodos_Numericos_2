@@ -164,6 +164,17 @@ Answer Eigenvectors::calculateByRegularPower(std::vector<std::vector<double>> A,
 
 Answer Eigenvectors::calculateByInversePower(std::vector<std::vector<double>> A, std::vector<double> v0, double error)
 {
+	// Fazemos algumas checagens de erro antes de progredir com o programa:
+	if(!Eigenvectors::isSquareMatrix(A) )
+	{
+		return Answer("Dados de entrada não compatíveis com esse método! A matriz recebida deve ser quadrada!");
+	}
+
+	if(A.size() != v0.size())
+	{
+		return Answer("Dados de entrada não compatíveis com esse método! O vetor recebido não tem a mesma dimensão que as linhas e colunas da matriz recebida!");
+	}
+
 	LU lu;
 	// Passo 2
 	std::vector<std::vector<std::vector<double>>> lau = lu.LU_factoration(A);
@@ -222,6 +233,10 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 	// Passo 2
 	Answer respostaInversa = Eigenvectors::calculateByInversePower(Au, v0, error);
 	
+	// Tratamento de erros
+	if(respostaInversa.getErrorFlag())
+		return Answer(respostaInversa.getErrorMessage());
+
 	// Passo 3
 	double lambda = respostaInversa.getEigenvalue() + u;
 	// Passo 4
