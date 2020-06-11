@@ -158,13 +158,13 @@ std::vector<double> LU::LU_partial_pivoting(std::vector<std::vector<double>> A, 
 
     for(uint i = 0; i < b.size(); i++)
         p.push_back(i);
-    
+
     for(int k = 0; k < int(b.size()); k++)
     {
         double pivot;
         int r;
         LU::choose_pivot(A, k, pivot, r);
-
+        
         if(pivot == 0)
             return {};
         
@@ -177,19 +177,21 @@ std::vector<double> LU::LU_partial_pivoting(std::vector<std::vector<double>> A, 
         {
             U[i][k] = A[i][k];
         }
+
         for(uint i = k+1; i < b.size(); i++)
         {
             m = A[i][k]/A[k][k];
-            LU::truncate(m);
             A[i][k] = m;
             L[i][k] = m;
             for(uint j = k+1; j < b.size(); j++)
             {
                 A[i][j] = A[i][j] - m*A[k][j]; 
-                LU::truncate(A[i][j]);
             }
         }
+
     }
+            
+
     std::vector<double> blin;
     int r;
     for(uint i = 0; i < b.size(); i++)

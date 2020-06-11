@@ -191,11 +191,11 @@ Answer Eigenvectors::calculateByInversePower(std::vector<std::vector<double>> A,
 		vkOld = vkNew;
 		// Passo 7
 		x1Old = Eigenvectors::normalizeVector(vkOld);
+
 		// Passo 8
 		vkNew = lu.LU_partial_pivoting(A,x1Old);
 		// Passo 9
 		lambda1New = Eigenvectors::dotProduct(x1Old, vkNew);
-		std::cout << "Lambda: " << lambda1New << std::endl;
 
 	} while(std::abs((lambda1New - lambda1Old)/lambda1New) > error); // Passo 10 (checagem de erro)
 
@@ -206,4 +206,26 @@ Answer Eigenvectors::calculateByInversePower(std::vector<std::vector<double>> A,
 
 	// Retornando o Autovalor e o seu Autovetor associado
 	return Answer(xn,lambdaN, cont, 0);
+}
+
+
+Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double>> A, std::vector<double> v0, double u, double error)
+{
+	
+	// Passo 1
+	std::vector<std::vector<double>> Au = A;
+
+	for(uint i = 0; i<A.size(); i++)
+	{
+		Au[i][i] = A[i][i] - u;
+	}	
+	// Passo 2
+	Answer respostaInversa = Eigenvectors::calculateByInversePower(Au, v0, error);
+	
+	// Passo 3
+	double lambda = respostaInversa.getEigenvalue() + u;
+	// Passo 4
+	std::vector<double> x = respostaInversa.getEigenvector();
+
+	return Answer(x, lambda, respostaInversa.getIterations(), 0);
 }

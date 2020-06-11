@@ -18,7 +18,7 @@
 int main() 
 {
 // Vetores de chute    
-    std::vector<double> chute1 = {0.17712,-0.82287,1};
+    std::vector<double> chute1 = {1,1,1};
     std::vector<double> chute2 = {1,2,3,4,5};
 
     // Matriz 1
@@ -37,14 +37,18 @@ int main()
         {1, 2, 2, 4, 5}
     };
 
+    std::vector<std::vector<double>> A3 = {
+        {-14,1,-2},
+        {1,-1,1},
+        {-2,1,-11}
+    };
+
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
 
     // Calculando para a Matriz 1 por Potência Inversa
-    Answer resp1 = av.calculateByInversePower(A1, chute1);
+    Answer resp1 = av.calculateByDisplacementPower(A3, chute1, -15);
 
-    // Calculando para a Matriz 2 por Potência Inversa
-    Answer resp2 = av.calculateByInversePower(A2, chute2);
 
     std::cout << "_______________________________________________________________" << std::endl << "Matriz 1:" << std::endl << std::endl;   
     if(!resp1.getErrorFlag())
@@ -57,19 +61,6 @@ int main()
     {
         std::cout << "Um erro ocorreu ao executar o método!" << std::endl;
         std::cout << resp1.getErrorMessage() << std::endl;
-    }
-
-    std::cout << "_______________________________________________________________" << std::endl << "Matriz 2:" << std::endl << std::endl;
-    if(!resp2.getErrorFlag())
-    {
-        std::cout << "Autovalor: " << resp2.getEigenvalue() << std::endl;
-        std::cout << "Autovetor: ";
-        av.printVector(resp2.getEigenvector());
-        std::cout << "Iterações: " << resp2.getIterations() << std::endl << std::endl << std::endl;
-    } else
-    {
-        std::cout << "Um erro ocorreu ao executar o método!" << std::endl;
-        std::cout << resp2.getErrorMessage() << std::endl;
     }
 
 

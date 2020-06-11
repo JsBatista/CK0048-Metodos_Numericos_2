@@ -18,4 +18,5 @@ class Eigenvectors
 		std::vector<double> normalizeVector(std::vector<double> v);
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 		Answer calculateByInversePower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
+		Answer calculateByDisplacementPower(std::vector<std::vector<double>> A, std::vector<double> v0, double u, double error = 0.000001);
 };
