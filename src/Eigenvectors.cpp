@@ -58,6 +58,48 @@ std::vector<double> Eigenvectors::normalizeVector(std::vector<double> v)
 
 }
 
+// Retorna a norma do vetor
+double Eigenvectors::getNorm(std::vector<double> v)
+{
+	double norm = 0;
+	std::vector<double> normalizedV = v;
+
+	for(uint i = 0; i < v.size(); i++)
+	{
+		norm += v[i]*v[i];
+	}
+
+	return std::sqrt(norm);
+}
+
+// Retorna o vetor resultante da subtração v1 - v2
+std::vector<double> Eigenvectors::vectorSubtraction(std::vector<double> v1, std::vector<double> v2)
+{
+	std::vector<double> s;
+
+	for(uint i = 0; i < v1.size(); i++)
+		s.push_back(v1[i] - v2[i]);
+
+	return s;
+}
+
+// Retorna a matriz resultante da subtração A - B
+std::vector<std::vector<double>> Eigenvectors::matrixSubtraction(std::vector<std::vector<double>> A, std::vector<std::vector<double>> B)
+{
+	std::vector<std::vector<double>> S;
+
+	for(uint i = 0; i < A.size(); i++)
+	{
+		S.push_back({});
+		for(uint j = 0; j < A[0].size(); j++)
+		{
+			S[i].push_back(A[i][j] - B[i][j]);
+		}
+	}
+
+	return S;
+}
+
 // Método que realiza a multiplicação de um vetor por uma matriz, ou vice versa, contanto que ambos sejam compatíveis
 // ex: Se a matrix for 5x3 e o vetor for 3x1, a multiplicação será feita Matriz x Vetor
 //     Se a matriz for 5x3 e o vetor for 5x1, a multiplicação será feita Vetor x Matriz
@@ -80,6 +122,63 @@ std::vector<double> Eigenvectors::vectorMatrixMultiplication(std::vector<double>
 
 	return mult;
 }
+
+// Multiplica 2 matrixes e retorna a matriz resultante
+std::vector<std::vector<double>> Eigenvectors::matrixMatrixMultiplication(std::vector<std::vector<double>> A,std::vector<std::vector<double>> B)
+{
+	std::vector<std::vector<double>> M;
+
+	for(uint i = 0; i < A.size(); i ++)
+	{
+		M.push_back({});
+		for(uint j = 0; j < B[0].size(); j++)
+		{
+			M[i].push_back(0);
+		}
+	}
+
+	for(uint i = 0; i < A.size(); i ++)
+	{
+		for(uint j = 0; j < B[0].size(); j ++)
+		{
+			for(uint k = 0; k < B.size(); k ++)
+			{
+				M[i][j] += A[i][k] * B[k][j];
+			}
+		}
+	}
+
+
+	return M;
+}
+
+// Retorna o vetor resultante da multiplicação do vetor v1 pelo escalar x
+std::vector<double> Eigenvectors::vectorScalarMultiplication(std::vector<double> v, double x)
+{
+	std::vector<double> m;
+
+	for(uint i = 0; i < v.size(); i++)
+		m.push_back(v[i]*x);
+
+	return m;
+}
+
+std::vector<std::vector<double>> Eigenvectors::matrixScalarMultiplication(std::vector<std::vector<double>> A, double x)
+{
+	std::vector<std::vector<double>> M;
+
+	for(uint i = 0; i < A.size(); i++)
+	{
+		M.push_back({});
+		for(uint j = 0; j < A[0].size(); j++)
+		{
+			M[i].push_back(A[i][j]*x);
+		}
+	}
+
+	return M;
+}
+
 
 // Faz o produto escalar de dois vetores de mesma dimensão
 // Colocar dois vetores de dimensões diferentes irá resultar em um erro
@@ -107,6 +206,20 @@ bool Eigenvectors::isSquareMatrix(std::vector<std::vector<double>> A)
 		}
 	}
 	return true;
+}
+
+// Retorna uma matriz transposta
+std::vector<std::vector<double>> Eigenvectors::transpostMatrix(std::vector<std::vector<double>> A)
+{
+	std::vector<std::vector<double>> At = A;
+	for(uint i = 0; i < A.size(); i++)
+	{
+		for(uint j = 0; j < A[i].size(); j++)
+		{
+			At[i][j] = A[j][i];
+		}
+	}
+	return At;
 }
 
 // Calcula o Autovalor e o seu Autovetor associado pelo método da Potência Regular.
@@ -243,4 +356,91 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 	std::vector<double> x = respostaInversa.getEigenvector();
 
 	return Answer(x, lambda, respostaInversa.getIterations(), 0);
+}
+
+
+void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
+{
+	std::vector<std::vector<double>> H, Hi, Ai, Abar, Aim1;
+	
+	// H = I
+	for(uint i = 0; i < A.size(); i++)
+	{
+		for(uint j = 0; i < A[i].size(); j++)
+		{
+			if(i == j)
+				H[i][j] = 1;
+			else
+				H[i][j] = 0;
+		}	
+	}
+
+	Aim1 = A;
+
+	for(uint i = 0; i < A.size() -3 ; i++)
+	{
+
+		Hi = {{}};
+
+		Ai = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(H), Aim1 ), Hi);
+
+		Aim1 = Ai;
+
+		H = Eigenvectors::matrixMatrixMultiplication(H, Hi);
+	}
+
+	Abar = Ai;
+
+	std::cout << "A: " << std::endl;
+	Eigenvectors::printMatrix(Abar);
+	std::cout << "H: " << std::endl;
+	Eigenvectors::printMatrix(H);
+
+}
+
+
+std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<std::vector<double>> A, int i)
+{
+	std::vector<std::vector<double>> I;
+	
+	for(uint i = 0; i < A.size(); i++)
+	{
+		for(uint j = 0; i < A[i].size(); j++)
+		{
+			if(i == j)
+				I[i][j] = 1;
+			else
+				I[i][j] = 0;
+		}	
+	}
+
+	std::vector<double> w, wl, N, n, e;
+
+	for(uint i = 0; i < A.size(); i ++)
+	{
+		w.push_back(0);
+		wl.push_back(0);
+		e.push_back(0);
+	}
+
+	for(uint x = i+1; x < A.size(); x++)
+	{
+		w[x] = A[x][i];
+	}
+
+	double Lw = Eigenvectors::getNorm(w);
+
+	wl[i+1] = Lw;
+
+	N = Eigenvectors::vectorSubtraction(w, wl);
+
+	n = Eigenvectors::normalizeVector(N);
+
+	std::vector<std::vector<double>> nMatrixForm = {n};
+	std::vector<std::vector<double>> nMatrixFormT = Eigenvectors::transpostMatrix(nMatrixForm);
+
+
+	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, Eigenvectors::matrixScalarMultiplication( Eigenvectors::matrixMatrixMultiplication(nMatrixForm, nMatrixFormT),2));
+
+	return H;
 }
