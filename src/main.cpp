@@ -18,6 +18,14 @@
 int main() 
 {
 
+    std::vector<std::vector<double>> A = {
+        {40, 8, 4, 2, 1},
+        {8, 30, 12, 6, 2},
+        {4, 12, 20, 1, 2},
+        {2, 6, 1, 25, 4},
+        {1, 2, 2, 4, 5}
+    };
+
     // Matriz 2
     std::vector<std::vector<double>> A2 = {
         {1,2,3},
@@ -31,15 +39,13 @@ int main()
         {16,17,18}
     };
 
+    std::vector<std::vector<double>> v = {{1,2,3}};
+
 
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
-
-    std::vector<std::vector<double>> A2t = av.transpostMatrix(A2);
-
-    av.printMatrix(av.matrixMatrixMultiplication(A2, A3));
-
-
+    av.HouseholderMethod(A);
+    std::cout << "OK";
     return 0;
 
 }

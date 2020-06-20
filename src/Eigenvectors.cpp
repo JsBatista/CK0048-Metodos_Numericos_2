@@ -211,12 +211,17 @@ bool Eigenvectors::isSquareMatrix(std::vector<std::vector<double>> A)
 // Retorna uma matriz transposta
 std::vector<std::vector<double>> Eigenvectors::transpostMatrix(std::vector<std::vector<double>> A)
 {
-	std::vector<std::vector<double>> At = A;
+	std::vector<std::vector<double>> At;
+
+
 	for(uint i = 0; i < A.size(); i++)
 	{
 		for(uint j = 0; j < A[i].size(); j++)
 		{
-			At[i][j] = A[j][i];
+			if(i == 0)
+				At.push_back({A[i][j]});	
+			else
+				At[j].push_back(A[i][j]);
 		}
 	}
 	return At;
@@ -366,12 +371,13 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 	// H = I
 	for(uint i = 0; i < A.size(); i++)
 	{
-		for(uint j = 0; i < A[i].size(); j++)
+		H.push_back({});
+		for(uint j = 0; j < A[i].size(); j++)
 		{
 			if(i == j)
-				H[i][j] = 1;
+				H[i].push_back(1);
 			else
-				H[i][j] = 0;
+				H[i].push_back(0);
 		}	
 	}
 
@@ -380,7 +386,7 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 	for(uint i = 0; i < A.size() -3 ; i++)
 	{
 
-		Hi = {{}};
+		Hi = Eigenvectors::HouseholderMethodAux(A, i);
 
 		Ai = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(H), Aim1 ), Hi);
 
@@ -405,12 +411,13 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 	
 	for(uint i = 0; i < A.size(); i++)
 	{
-		for(uint j = 0; i < A[i].size(); j++)
+		I.push_back({});
+		for(uint j = 0; j < A[i].size(); j++)
 		{
 			if(i == j)
-				I[i][j] = 1;
+				I[i].push_back(1);
 			else
-				I[i][j] = 0;
+				I[i].push_back(0);
 		}	
 	}
 
@@ -422,25 +429,31 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 		wl.push_back(0);
 		e.push_back(0);
 	}
-
 	for(uint x = i+1; x < A.size(); x++)
 	{
-		w[x] = A[x][i];
+		w.push_back(A[x][i]);
 	}
+
 
 	double Lw = Eigenvectors::getNorm(w);
 
 	wl[i+1] = Lw;
 
 	N = Eigenvectors::vectorSubtraction(w, wl);
+	
 
 	n = Eigenvectors::normalizeVector(N);
-
+	
 	std::vector<std::vector<double>> nMatrixForm = {n};
+	
 	std::vector<std::vector<double>> nMatrixFormT = Eigenvectors::transpostMatrix(nMatrixForm);
+	
 
+	std::vector<std::vector<double>> step1 = Eigenvectors::matrixMatrixMultiplication(nMatrixFormT, nMatrixForm);
+	Eigenvectors::printMatrix(step1);
+	std::vector<std::vector<double>> step2 = Eigenvectors::matrixScalarMultiplication( step1,2);
 
-	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, Eigenvectors::matrixScalarMultiplication( Eigenvectors::matrixMatrixMultiplication(nMatrixForm, nMatrixFormT),2));
+	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, step2);
 
 	return H;
 }
