@@ -8,6 +8,29 @@ Eigenvectors::Eigenvectors(){
 
 }
 
+// Trunca elementos da matrix em 6 casas decimais
+std::vector<std::vector<double>> Eigenvectors::truncateMatrix(std::vector<std::vector<double>> A)
+{
+	std::vector<std::vector<double>> M;
+
+	for(uint i = 0; i < A.size(); i ++)
+	{
+		M.push_back({});
+		for(uint j = 0; j < A[0].size(); j++)
+		{
+			M[i].push_back(0);
+		}
+	}
+
+	for(uint i = 0; i < A.size(); i++)
+		for(uint j = 0; j < A[i].size(); j++)
+			if(std::abs(A[i][j]) > 0.00000000001)
+				M[i][j] = A[i][j];
+
+	return M;
+}
+
+
 // Método que imprime um vetor, já que vector não é diretamente compatível com std::cout
 void Eigenvectors::printVector(std::vector<double> v)
 {
@@ -126,6 +149,13 @@ std::vector<double> Eigenvectors::vectorMatrixMultiplication(std::vector<double>
 // Multiplica 2 matrixes e retorna a matriz resultante
 std::vector<std::vector<double>> Eigenvectors::matrixMatrixMultiplication(std::vector<std::vector<double>> A,std::vector<std::vector<double>> B)
 {
+	/*
+	std::cout << "[BEGIN MATRIX MULTIPLICATION]" << std::endl;
+	std::cout << "Multipling " << std::endl;
+	Eigenvectors::printMatrix(A);
+	std::cout<<" x " <<std::endl;
+	Eigenvectors::printMatrix(B);
+	*/
 	std::vector<std::vector<double>> M;
 
 	for(uint i = 0; i < A.size(); i ++)
@@ -137,14 +167,18 @@ std::vector<std::vector<double>> Eigenvectors::matrixMatrixMultiplication(std::v
 		}
 	}
 
+	double sum;
+
 	for(uint i = 0; i < A.size(); i ++)
 	{
 		for(uint j = 0; j < B[0].size(); j ++)
 		{
+			sum = 0;
 			for(uint k = 0; k < B.size(); k ++)
 			{
-				M[i][j] += A[i][k] * B[k][j];
+				sum += A[i][k] * B[k][j];
 			}
+			M[i][j] = sum;
 		}
 	}
 
@@ -364,6 +398,66 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 {
 	std::vector<std::vector<double>> H, Hi, Ai, Abar, Aim1;
@@ -383,16 +477,35 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 
 	Aim1 = A;
 
-	for(uint i = 0; i < A.size() -3 ; i++)
+	for(uint i = 0; i < A.size() -2 ; i++)
 	{
 
-		Hi = Eigenvectors::HouseholderMethodAux(A, i);
+		Hi = Eigenvectors::HouseholderMethodAux(Aim1, i);
 
-		Ai = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(H), Aim1 ), Hi);
+		Ai = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ), Hi);
+		
+		std::cout << "Ht : " << std::endl;
+		Eigenvectors::printMatrix(Eigenvectors::transpostMatrix(Hi)); 
 
+		std::cout << "HtA" <<" : "<<std::endl;
+		Eigenvectors::printMatrix( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ) );
+		std::cout << "HtAH" <<" : "<<std::endl;
+		Eigenvectors::printMatrix(Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ), Hi));
+
+
+		
 		Aim1 = Ai;
 
+
+		Ai = Eigenvectors::truncateMatrix(Ai);
+		Aim1 = Eigenvectors::truncateMatrix(Aim1);
+
+		std::cout << "A" << i <<" : "<<std::endl;
+		Eigenvectors::printMatrix(Ai);
+		std::cout << std::endl<< std::endl;
+
 		H = Eigenvectors::matrixMatrixMultiplication(H, Hi);
+		H = Eigenvectors::truncateMatrix(H);
 	}
 
 	Abar = Ai;
@@ -409,21 +522,21 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 {
 	std::vector<std::vector<double>> I;
 	
-	for(uint i = 0; i < A.size(); i++)
+	for(uint j = 0; j < A.size(); j++)
 	{
 		I.push_back({});
-		for(uint j = 0; j < A[i].size(); j++)
+		for(uint k = 0; k < A[j].size(); k++)
 		{
-			if(i == j)
-				I[i].push_back(1);
+			if(j == k)
+				I[j].push_back(1);
 			else
-				I[i].push_back(0);
+				I[j].push_back(0);
 		}	
 	}
 
 	std::vector<double> w, wl, N, n, e;
 
-	for(uint i = 0; i < A.size(); i ++)
+	for(uint j = 0; j < A.size(); j ++)
 	{
 		w.push_back(0);
 		wl.push_back(0);
@@ -431,29 +544,61 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 	}
 	for(uint x = i+1; x < A.size(); x++)
 	{
-		w.push_back(A[x][i]);
+		w[x] = A[x][i];
 	}
+
+	std::cout<<"W = ";
+	Eigenvectors::printVector(w);
+	std::cout << std::endl;
 
 
 	double Lw = Eigenvectors::getNorm(w);
 
+	std::cout<<"Lw = "<< Lw << std::endl;
+
 	wl[i+1] = Lw;
 
+	std::cout<<"W' = ";
+	Eigenvectors::printVector(wl);
+	std::cout << std::endl;
+
 	N = Eigenvectors::vectorSubtraction(w, wl);
+
+	std::cout<<"N = ";
+	Eigenvectors::printVector(N);
+	std::cout << std::endl;
+
+
 	
 
 	n = Eigenvectors::normalizeVector(N);
 	
+
+	std::cout<<"n = ";
+	Eigenvectors::printVector(n);
+	std::cout << std::endl;
+
 	std::vector<std::vector<double>> nMatrixForm = {n};
-	
+	std::cout << "n matriz: " << std::endl;
+	Eigenvectors::printMatrix(nMatrixForm);
 	std::vector<std::vector<double>> nMatrixFormT = Eigenvectors::transpostMatrix(nMatrixForm);
-	
+	std::cout << "nt matriz: " << std::endl;
+	Eigenvectors::printMatrix(nMatrixFormT);
 
 	std::vector<std::vector<double>> step1 = Eigenvectors::matrixMatrixMultiplication(nMatrixFormT, nMatrixForm);
+	std::cout << "n.nt: " << std::endl;
 	Eigenvectors::printMatrix(step1);
+	//Eigenvectors::printMatrix(step1);
 	std::vector<std::vector<double>> step2 = Eigenvectors::matrixScalarMultiplication( step1,2);
+	std::cout << "2n.nt: " << std::endl;
+	Eigenvectors::printMatrix(step2);
+
 
 	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, step2);
+
+
+	std::cout << "H: " << std::endl;
+	Eigenvectors::printMatrix(H);
 
 	return H;
 }
