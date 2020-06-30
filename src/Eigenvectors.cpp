@@ -398,66 +398,6 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 {
 	std::vector<std::vector<double>> H, Hi, Ai, Abar, Aim1;
@@ -484,25 +424,10 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 
 		Ai = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ), Hi);
 		
-		std::cout << "Ht : " << std::endl;
-		Eigenvectors::printMatrix(Eigenvectors::transpostMatrix(Hi)); 
-
-		std::cout << "HtA" <<" : "<<std::endl;
-		Eigenvectors::printMatrix( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ) );
-		std::cout << "HtAH" <<" : "<<std::endl;
-		Eigenvectors::printMatrix(Eigenvectors::matrixMatrixMultiplication( Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Hi), Aim1 ), Hi));
-
-
-		
 		Aim1 = Ai;
-
 
 		Ai = Eigenvectors::truncateMatrix(Ai);
 		Aim1 = Eigenvectors::truncateMatrix(Aim1);
-
-		std::cout << "A" << i <<" : "<<std::endl;
-		Eigenvectors::printMatrix(Ai);
-		std::cout << std::endl<< std::endl;
 
 		H = Eigenvectors::matrixMatrixMultiplication(H, Hi);
 		H = Eigenvectors::truncateMatrix(H);
@@ -510,11 +435,93 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 
 	Abar = Ai;
 
-	std::cout << "A: " << std::endl;
+	std::cout << "(1)" << std::endl;
+	std::cout << "Matriz A: " << std::endl;
 	Eigenvectors::printMatrix(Abar);
-	std::cout << "H: " << std::endl;
+	std::cout << "Matriz H: " << std::endl;
 	Eigenvectors::printMatrix(H);
 
+
+	Answer abar1 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 1);
+	Answer abar2 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 10);
+	Answer abar3 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 20);
+	Answer abar4 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 30);
+	Answer abar5 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 50);
+
+	std::cout << "(2)" << std::endl;
+	std::cout << "Autovalores e Autovetores da matriz Abarra:" << std::endl;
+
+	std::cout << std::endl << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printVector(abar1.getEigenvector());
+
+	std::cout << std::endl << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printVector(abar2.getEigenvector());
+
+	std::cout << std::endl << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printVector(abar3.getEigenvector());
+
+	std::cout << std::endl << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printVector(abar4.getEigenvector());
+
+	std::cout << std::endl << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printVector(abar5.getEigenvector());
+
+	std::cout << "(3) & (4)" << std::endl << "Autovetores e Autovalores da matriz A:" << std::endl;
+
+	std::cout << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printMatrix(
+			Eigenvectors::matrixMatrixMultiplication(
+					H, Eigenvectors::transpostMatrix({abar1.getEigenvector()})
+				)
+		);
+
+	std::cout << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printMatrix(
+			Eigenvectors::matrixMatrixMultiplication(
+					H, Eigenvectors::transpostMatrix({abar2.getEigenvector()})
+				)
+		);
+
+	std::cout << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printMatrix(
+			Eigenvectors::matrixMatrixMultiplication(
+					H, Eigenvectors::transpostMatrix({abar3.getEigenvector()})
+				)
+		);
+
+	std::cout << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printMatrix(
+			Eigenvectors::matrixMatrixMultiplication(
+					H, Eigenvectors::transpostMatrix({abar4.getEigenvector()})
+				)
+		);
+
+	std::cout << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
+
+	std::cout << "Autovetor relacionado: " << std::endl;
+	Eigenvectors::printMatrix(
+			Eigenvectors::matrixMatrixMultiplication(
+					H, Eigenvectors::transpostMatrix({abar5.getEigenvector()})
+				)
+		);
 }
 
 
@@ -547,55 +554,26 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 		w[x] = A[x][i];
 	}
 
-	std::cout<<"W = ";
-	Eigenvectors::printVector(w);
-	std::cout << std::endl;
-
-
 	double Lw = Eigenvectors::getNorm(w);
-
-	std::cout<<"Lw = "<< Lw << std::endl;
 
 	wl[i+1] = Lw;
 
-	std::cout<<"W' = ";
-	Eigenvectors::printVector(wl);
-	std::cout << std::endl;
-
 	N = Eigenvectors::vectorSubtraction(w, wl);
 
-	std::cout<<"N = ";
-	Eigenvectors::printVector(N);
-	std::cout << std::endl;
-
-
-	
 
 	n = Eigenvectors::normalizeVector(N);
 	
 
-	std::cout<<"n = ";
-	Eigenvectors::printVector(n);
-	std::cout << std::endl;
-
 	std::vector<std::vector<double>> nMatrixForm = {n};
-	std::cout << "n matriz: " << std::endl;
-	Eigenvectors::printMatrix(nMatrixForm);
+
 	std::vector<std::vector<double>> nMatrixFormT = Eigenvectors::transpostMatrix(nMatrixForm);
-	std::cout << "nt matriz: " << std::endl;
-	Eigenvectors::printMatrix(nMatrixFormT);
+
 
 	std::vector<std::vector<double>> step1 = Eigenvectors::matrixMatrixMultiplication(nMatrixFormT, nMatrixForm);
-	std::cout << "n.nt: " << std::endl;
-	Eigenvectors::printMatrix(step1);
-	//Eigenvectors::printMatrix(step1);
-	std::vector<std::vector<double>> step2 = Eigenvectors::matrixScalarMultiplication( step1,2);
-	std::cout << "2n.nt: " << std::endl;
-	Eigenvectors::printMatrix(step2);
 
+	std::vector<std::vector<double>> step2 = Eigenvectors::matrixScalarMultiplication( step1,2);
 
 	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, step2);
-
 
 	std::cout << "H: " << std::endl;
 	Eigenvectors::printMatrix(H);
