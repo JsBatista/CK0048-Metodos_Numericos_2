@@ -10,7 +10,6 @@ class Eigenvectors
 		std::vector<double> vectorMatrixMultiplication(std::vector<double> v, std::vector<std::vector<double>> A);
 		double dotProduct(std::vector<double> v1, std::vector<double> v2);
 		bool isSquareMatrix(std::vector<std::vector<double>> A);
-		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
 		std::vector<double> vectorSubtraction(std::vector<double> v1, std::vector<double> v2);
 		std::vector<std::vector<double>> matrixSubtraction(std::vector<std::vector<double>> A, std::vector<std::vector<double>> B);
 		std::vector<std::vector<double>> truncateMatrix(std::vector<std::vector<double>> A);
@@ -32,4 +31,5 @@ class Eigenvectors
 		Answer calculateByDisplacementPower(std::vector<std::vector<double>> A, std::vector<double> v0, double u, double error = 0.000001);
 
 		void HouseholderMethod(std::vector<std::vector<double>> A);
+		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
 };

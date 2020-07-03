@@ -435,7 +435,7 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 
 	Abar = Ai;
 
-	std::cout << "(1)" << std::endl;
+	std::cout << std::endl << "(1)" << std::endl;
 	std::cout << "Matriz A: " << std::endl;
 	Eigenvectors::printMatrix(Abar);
 	std::cout << "Matriz H: " << std::endl;
@@ -448,7 +448,7 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 	Answer abar4 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 30);
 	Answer abar5 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 50);
 
-	std::cout << "(2)" << std::endl;
+	std::cout << std::endl << "(2)" << std::endl;
 	std::cout << "Autovalores e Autovetores da matriz Abarra:" << std::endl;
 
 	std::cout << std::endl << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
@@ -476,7 +476,7 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 	std::cout << "Autovetor relacionado: " << std::endl;
 	Eigenvectors::printVector(abar5.getEigenvector());
 
-	std::cout << "(3) & (4)" << std::endl << "Autovetores e Autovalores da matriz A:" << std::endl;
+	std::cout <<std::endl<< "(3) & (4)" << std::endl << "Autovetores e Autovalores da matriz A:" << std::endl;
 
 	std::cout << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
 
@@ -574,9 +574,6 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 	std::vector<std::vector<double>> step2 = Eigenvectors::matrixScalarMultiplication( step1,2);
 
 	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, step2);
-
-	std::cout << "H: " << std::endl;
-	Eigenvectors::printMatrix(H);
 
 	return H;
 }

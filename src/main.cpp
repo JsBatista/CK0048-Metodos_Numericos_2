@@ -26,10 +26,18 @@ int main()
         {1, 2, 2, 4, 5}
     };
 
+    std::vector<std::vector<double>> B = {
+        {3,1,0,0,0},
+        {1,4,3,0,0},
+        {0,3,5,2,1},
+        {0,0,2,6,1},
+        {0,0,1,3,8}
+    };
 
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
     av.HouseholderMethod(A);
+    //av.printMatrix(av.HouseholderMethodAux(B, 2));
     return 0;
 
 }
