@@ -29,9 +29,6 @@ int main()
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
 
-    av.printMatrix(av.createMatrix(3, false));
-    av.printMatrix(av.createMatrix(5, true));
-
     return 0;
 
 }

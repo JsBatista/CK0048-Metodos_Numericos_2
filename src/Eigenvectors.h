@@ -26,7 +26,7 @@ class Eigenvectors
 		std::vector<std::vector<double>> matrixMatrixMultiplication(std::vector<std::vector<double>> A,std::vector<std::vector<double>> B);
 		std::vector<double> vectorScalarMultiplication(std::vector<double> v, double x);
 		std::vector<std::vector<double>> matrixScalarMultiplication(std::vector<std::vector<double>> A, double x);
-		std::vector<std::vector<double>> createMatrix(int n, bool i);
+		std::vector<std::vector<double>> createMatrix(uint n, bool i);
 
 		std::vector<double> normalizeVector(std::vector<double> v);
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);

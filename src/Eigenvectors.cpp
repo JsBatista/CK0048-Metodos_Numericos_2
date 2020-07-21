@@ -9,13 +9,13 @@ Eigenvectors::Eigenvectors(){
 }
 
 // Cria uma matriz nxn que pode ou não ser identidade
-std::vector<std::vector<double>> Eigenvectors::createMatrix(int n, bool i)
+std::vector<std::vector<double>> Eigenvectors::createMatrix(uint n, bool i)
 {
 	std::vector<std::vector<double>> M;
-	for(int k = 0; k < n; k++)
+	for(uint k = 0; k < n; k++)
 	{
 		M.push_back({});
-		for(int j = 0; j < n; j++)
+		for(uint j = 0; j < n; j++)
 		{
 			if(i && k == j)
 				M[k].push_back(1);
@@ -607,5 +607,44 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 
 void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, double error)
 {
+	// Inicialização das matrizes, P como identidade
+	std::vector<std::vector<double>> P, J, Anew, Aold, Abar;
+	P = Eigenvectors::createMatrix(A.size(), true);
+	J = Eigenvectors::createMatrix(A.size(), false);
+	Anew = Eigenvectors::createMatrix(A.size(), false);
+	Aold = Eigenvectors::createMatrix(A.size(), false);
+	Abar = Eigenvectors::createMatrix(A.size(), false);
 
+	// Declaração do vetor Lamb que vai armazenar os autovalores de A
+	std::vector<double> Lamb;
+
+	// Escalar para armazenar a soma dos quadrados dos termos abaixo da diagonal principal para convergência
+	float val = 100;
+
+	// Atribuimos a matriz Avelha a matriz A
+	Aold = A;
+
+	// Loop das varreduras de diagonalização
+	while(val > error)
+	{
+		// [VARREDURAS DE JACOBI]
+
+		// Salvar Anova para a proxima iteração
+		Aold = Anew;
+
+		// Acumular produto das matrizes de Jacobi
+		P = Eigenvectors::matrixMatrixMultiplication(P, J);
+
+		// [VERIFICAR SE A MATRIZ JÁ É SUFICIENTEMENTE DIAGONAL]
+	}
+
+	// Copiar elementos da diagonal principal da matrix para o vetor Lamb
+
+	for(uint i = 0; i < Anew.size(); i ++)
+	{
+		Lamb.push_back(Anew[i][i]);
+	}
+
+	// [PRINT P]
+	// [PRINT LAMBDA]
 }
