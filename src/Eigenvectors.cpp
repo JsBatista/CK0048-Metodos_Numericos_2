@@ -8,6 +8,25 @@ Eigenvectors::Eigenvectors(){
 
 }
 
+// Cria uma matriz nxn que pode ou não ser identidade
+std::vector<std::vector<double>> Eigenvectors::createMatrix(int n, bool i)
+{
+	std::vector<std::vector<double>> M;
+	for(int k = 0; k < n; k++)
+	{
+		M.push_back({});
+		for(int j = 0; j < n; j++)
+		{
+			if(i && k == j)
+				M[k].push_back(1);
+			else
+				M[k].push_back(0);
+
+		}
+	}
+	return M;
+}
+
 // Trunca elementos da matrix em 6 casas decimais
 std::vector<std::vector<double>> Eigenvectors::truncateMatrix(std::vector<std::vector<double>> A)
 {
@@ -576,4 +595,17 @@ std::vector<std::vector<double>> Eigenvectors::HouseholderMethodAux(std::vector<
 	std::vector<std::vector<double>> H = Eigenvectors::matrixSubtraction(I, step2);
 
 	return H;
+}
+
+
+
+
+
+
+
+// Iniciando método de Jacobi
+
+void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, double error)
+{
+
 }

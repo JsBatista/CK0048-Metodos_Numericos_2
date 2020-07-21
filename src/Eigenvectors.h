@@ -16,6 +16,8 @@ class Eigenvectors
 
 
 
+
+
 	public:
 		Eigenvectors();		
 		void printVector(std::vector<double> v);
@@ -24,6 +26,7 @@ class Eigenvectors
 		std::vector<std::vector<double>> matrixMatrixMultiplication(std::vector<std::vector<double>> A,std::vector<std::vector<double>> B);
 		std::vector<double> vectorScalarMultiplication(std::vector<double> v, double x);
 		std::vector<std::vector<double>> matrixScalarMultiplication(std::vector<std::vector<double>> A, double x);
+		std::vector<std::vector<double>> createMatrix(int n, bool i);
 
 		std::vector<double> normalizeVector(std::vector<double> v);
 		Answer calculateByRegularPower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
@@ -32,4 +35,8 @@ class Eigenvectors
 
 		void HouseholderMethod(std::vector<std::vector<double>> A);
 		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
+
+		void JacobiMethod(std::vector<std::vector<double>> A, int n, double error);
+		std::vector<std::vector<std::vector<double>>> JacobiSweep(std::vector<std::vector<double>> A, int n);
+		std::vector<std::vector<double>> JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
 };
