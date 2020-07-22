@@ -8,6 +8,19 @@ Eigenvectors::Eigenvectors(){
 
 }
 
+// Retorna a soma dos termos abaixo da diagonal principal
+double Eigenvectors::sumSquareBelowDiagonal(std::vector<std::vector<double>> A)
+{
+	// Verifica se a matriz é quadrada
+	if(A.size() != A[0].size())
+		return -1;
+	double sum = 0;
+	for(uint i = 0; i < A.size(); i++)
+		for(uint j = i+1; j < A[i].size(); j++)
+			sum += A[j][i]*A[j][i];
+	return sum;
+}
+
 // Cria uma matriz nxn que pode ou não ser identidade
 std::vector<std::vector<double>> Eigenvectors::createMatrix(uint n, bool i)
 {
@@ -627,7 +640,10 @@ void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, doubl
 	// Loop das varreduras de diagonalização
 	while(val > error)
 	{
-		// [VARREDURAS DE JACOBI]
+		// Varredura de Jacobi
+		std::vector<std::vector<std::vector<double>>> sweepResult = Eigenvectors::JacobiSweep(Aold, n);
+		Anew = sweepResult[0];
+		J = sweepResult[1];
 
 		// Salvar Anova para a proxima iteração
 		Aold = Anew;
@@ -636,6 +652,7 @@ void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, doubl
 		P = Eigenvectors::matrixMatrixMultiplication(P, J);
 
 		// [VERIFICAR SE A MATRIZ JÁ É SUFICIENTEMENTE DIAGONAL]
+		val = Eigenvectors::sumSquareBelowDiagonal(Anew);
 	}
 
 	// Copiar elementos da diagonal principal da matrix para o vetor Lamb
@@ -645,6 +662,85 @@ void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, doubl
 		Lamb.push_back(Anew[i][i]);
 	}
 
+
 	// [PRINT P]
-	// [PRINT LAMBDA]
+	// [PRINT LAMB]
+	std::cout << "P : " << std::endl;
+	Eigenvectors::printMatrix(P);
+	std::cout << "Lamb : " << std::endl;
+	Eigenvectors::printVector(Lamb);
+	
+
+}
+
+
+
+std::vector<std::vector<std::vector<double>>> Eigenvectors::JacobiSweep(std::vector<std::vector<double>> A, int n)
+{
+	// Inicialização das matrizes, J como identidade, Aold como A, Jij apenas declarada
+	std::vector<std::vector<double>> J, Jij, Anew, Aold, Abar;
+	J = Eigenvectors::createMatrix(A.size(), true);
+	Jij = Eigenvectors::createMatrix(A.size(), false);
+	Anew = Eigenvectors::createMatrix(A.size(), false);
+	Aold = A;
+	Abar = Eigenvectors::createMatrix(A.size(), false);
+
+	// Loop das colunas
+	for(int j = 0; j < n-1; j++)
+	{
+		// Loop das linhas
+		for(int i = j+1; i < n; i++)
+		{
+			// Construção da matriz de Jacobi Jij
+			// [EXECUÇÃO DO TERCEIRO METODO E ATRIBUI A Jij]
+			Jij = Eigenvectors::JacobiMatrixIJBased(Aold, i, j, n);
+
+			// Transformãção de similaridade do passo ij
+			// Produto de 3 matrizes
+			// Como Jij não é simétrica, precisamos computar sua transposta
+			Anew = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Jij) ,
+																Eigenvectors::matrixMatrixMultiplication(
+																	Aold, Jij
+																) 
+															);
+			// Salvar para o próximo passo
+			Aold = Anew;
+
+			// Acumular o produto das matrizes de Jacobi
+			J = Eigenvectors::matrixMatrixMultiplication(J, Jij);
+		}	
+	}
+
+	// No fim das iterações, o formato de Anova está proximo de uma matriz diagonal
+	Abar = Anew;
+
+	return {Abar, J};
+}
+
+std::vector<std::vector<double>> Eigenvectors::JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n)
+{
+	// Inicialização da matriz Jij como Identidade
+	std::vector<std::vector<double>> Jij = Eigenvectors::createMatrix(A.size(), true);
+
+	double omega;
+	double epsilon = 0.000001;
+	const double PI  =3.141592653589793238463;
+
+	// Consideraremos Aij = 0
+	if( std::abs(A[i][j]) < epsilon )
+		return Jij;
+
+	// Calcular omega
+	if( std::abs(A[i][i] - A[j][j]) < epsilon )
+		omega = PI/4;
+	else
+		omega = 0.5*std::atan( (-2*A[i][j])/(A[i][i] - A[j][j]) ); // Função retornando um angulo +/-
+
+	// Atribuindo na matriz Jij os valores de cosseno e seno de omega
+	Jij[i][i] = std::cos(omega);
+	Jij[j][j] = std::cos(omega);
+	Jij[i][j] = std::sin(omega);
+	Jij[j][i] = (-1)*std::sin(omega);
+	
+	return Jij;
 }

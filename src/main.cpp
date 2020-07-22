@@ -26,8 +26,18 @@ int main()
         {1, 2, 2, 4, 5}
     };
 
+    std::vector<std::vector<double>> B = {
+        {-1000, 0.234235, 0.34823674},
+        {2, -1000, 0.1826741},
+        {3, 4, 0.89127512}
+    };
+
+    
+
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
+
+    std::cout << av.sumSquareBelowDiagonal(B) << std::endl;
 
     return 0;
 
