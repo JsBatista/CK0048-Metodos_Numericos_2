@@ -37,7 +37,8 @@ int main()
     // Inicializando nosso objeto de cálculo de autovetores e autovalores
     Eigenvectors av;
 
-    std::cout << av.sumSquareBelowDiagonal(B) << std::endl;
+    av.AdaptedJacobiMethod(A, int(A.size()), 0.000001 );
+
 
     return 0;
 

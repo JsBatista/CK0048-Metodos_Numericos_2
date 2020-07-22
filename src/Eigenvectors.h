@@ -33,11 +33,17 @@ class Eigenvectors
 		Answer calculateByInversePower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 		Answer calculateByDisplacementPower(std::vector<std::vector<double>> A, std::vector<double> v0, double u, double error = 0.000001);
 
-		void HouseholderMethod(std::vector<std::vector<double>> A);
+		std::vector<std::vector<std::vector<double>>> HouseholderMethod(std::vector<std::vector<double>> A);
 		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
 
 		void JacobiMethod(std::vector<std::vector<double>> A, int n, double error);
 		std::vector<std::vector<std::vector<double>>> JacobiSweep(std::vector<std::vector<double>> A, int n);
 		std::vector<std::vector<double>> JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
 		double sumSquareBelowDiagonal(std::vector<std::vector<double>> A);
+
+
+		void AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n, double error);
+		std::vector<std::vector<std::vector<double>>> AdaptedJacobiSweep(std::vector<std::vector<double>> A, int n);
+		std::vector<std::vector<double>> AdaptedJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
+		
 };

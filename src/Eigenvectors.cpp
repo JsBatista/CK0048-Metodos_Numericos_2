@@ -430,7 +430,7 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 }
 
 
-void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
+std::vector<std::vector<std::vector<double>>> Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 {
 	std::vector<std::vector<double>> H, Hi, Ai, Abar, Aim1;
 	
@@ -554,6 +554,8 @@ void Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
 					H, Eigenvectors::transpostMatrix({abar5.getEigenvector()})
 				)
 		);
+
+	return {Abar, H};
 }
 
 
@@ -669,7 +671,28 @@ void Eigenvectors::JacobiMethod(std::vector<std::vector<double>> A, int n, doubl
 	Eigenvectors::printMatrix(P);
 	std::cout << "Lamb : " << std::endl;
 	Eigenvectors::printVector(Lamb);
-	
+
+	std::cout << "Pares de autovalores e autovetores: " << std::endl;
+	for(uint i = 0; i < P.size(); i++)
+	{
+		std::cout << "Autovalor: " << Lamb[i] << std::endl << "Autovetor relacionado: [";
+		for(uint j = 0; j < P[i].size(); j++)
+		{
+			std::cout << P[j][i];
+			if(j != P[i].size()-1)
+				std::cout << ", ";
+		}
+		std::cout << " ]" << std::endl;
+	}
+
+
+	std::cout << std::endl << "Autovalores e autovetores da mesma matriz quando aplicado o método de Householder:" << std::endl;
+	std::cout << "Autovalor: 49.3831" << std::endl<< "Autovetor relacionado: [0.698061, 0.579872, 0.344866, 0.226863, 0.0778446]" << std::endl;
+	std::cout << "Autovalor: 31.3115" << std::endl<< "Autovetor relacionado: [-0.70729, 0.501214, 0.329826, 0.362475, 0.0913914]" << std::endl;
+	std::cout << "Autovalor: 11.6424" << std::endl<< "Autovetor relacionado: [-0.0413278, 0.591926, -0.774517, -0.155407, -0.154556]" << std::endl;
+	std::cout << "Autovalor: 23.6481" << std::endl<< "Autovetor relacionado: [0.103246, -0.247037, -0.394104, 0.870491, 0.123451]" << std::endl;
+	std::cout << "Autovalor: 4.01488" << std::endl<< "Autovetor relacionado: [0.00908417, -0.0318935, 0.131552, 0.187416, -0.972867]" << std::endl;
+
 
 }
 
@@ -714,10 +737,186 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::JacobiSweep(std::vec
 	// No fim das iterações, o formato de Anova está proximo de uma matriz diagonal
 	Abar = Anew;
 
+
+	std::cout << "A barra : " << std::endl;
+	Eigenvectors::printMatrix(Abar);
+
+	std::cout << "J: " << std::endl;
+	Eigenvectors::printMatrix(J);
+
 	return {Abar, J};
 }
 
 std::vector<std::vector<double>> Eigenvectors::JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n)
+{
+	// Inicialização da matriz Jij como Identidade
+	std::vector<std::vector<double>> Jij = Eigenvectors::createMatrix(A.size(), true);
+
+	double omega;
+	double epsilon = 0.000001;
+	const double PI  =3.141592653589793238463;
+
+	// Consideraremos Aij = 0
+	if( std::abs(A[i][j]) < epsilon )
+		return Jij;
+
+	// Calcular omega
+	if( std::abs(A[i][i] - A[j][j]) < epsilon )
+		omega = PI/4;
+	else
+		omega = 0.5*std::atan( (-2*A[i][j])/(A[i][i] - A[j][j]) ); // Função retornando um angulo +/-
+
+	// Atribuindo na matriz Jij os valores de cosseno e seno de omega
+	Jij[i][i] = std::cos(omega);
+	Jij[j][j] = std::cos(omega);
+	Jij[i][j] = std::sin(omega);
+	Jij[j][i] = (-1)*std::sin(omega);
+	
+	return Jij;
+}
+
+
+// Adaptação do método de Jacobi recebendo a matriz tridiagonal Abarra do método de Householder
+void Eigenvectors::AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n, double error)
+{
+	// Inicialização das matrizes, P como identidade
+	std::vector<std::vector<double>> P, J, Anew, Aold, Abar, H;
+	P = Eigenvectors::createMatrix(A.size(), true);
+	J = Eigenvectors::createMatrix(A.size(), false);
+	Anew = Eigenvectors::createMatrix(A.size(), false);
+	Aold = Eigenvectors::createMatrix(A.size(), false);
+	Abar = Eigenvectors::createMatrix(A.size(), false);
+
+	// Declaração do vetor Lamb que vai armazenar os autovalores de A
+	std::vector<double> Lamb;
+
+	// Escalar para armazenar a soma dos quadrados dos termos abaixo da diagonal principal para convergência
+	float val = 100;
+
+	// Atribuimos a matriz Avelha a matriz A
+	std::vector<std::vector<std::vector<double>>> householderMethodResults = Eigenvectors::HouseholderMethod(A);
+	Aold = householderMethodResults[0];
+	H = householderMethodResults[1];
+
+	// Loop das varreduras de diagonalização
+	while(val > error)
+	{
+		// Varredura de Jacobi
+		std::vector<std::vector<std::vector<double>>> sweepResult = Eigenvectors::AdaptedJacobiSweep(Aold, n);
+		Anew = sweepResult[0];
+		J = sweepResult[1];
+
+		// Salvar Anova para a proxima iteração
+		Aold = Anew;
+
+		// Acumular produto das matrizes de Jacobi
+		P = Eigenvectors::matrixMatrixMultiplication(P, J);
+
+		// [VERIFICAR SE A MATRIZ JÁ É SUFICIENTEMENTE DIAGONAL]
+		val = Eigenvectors::sumSquareBelowDiagonal(Anew);
+
+		std::cout << "Val: " << val;
+	}
+
+	// Copiar elementos da diagonal principal da matrix para o vetor Lamb
+
+	for(uint i = 0; i < Anew.size(); i ++)
+	{
+		Lamb.push_back(Anew[i][i]);
+	}
+
+
+	// [PRINT P]
+	// [PRINT LAMB]
+	std::cout << "P que não são os autovetores: " << std::endl;
+	Eigenvectors::printMatrix(P);
+
+	P = Eigenvectors::matrixMatrixMultiplication(H, P);
+
+	std::cout << "P que agora depois de ser multiplicado por H são os autovetores: " << std::endl;
+	Eigenvectors::printMatrix(P);
+
+	std::cout << "Lamb : " << std::endl;
+	Eigenvectors::printVector(Lamb);
+
+	std::cout << "Pares de autovalores e autovetores: " << std::endl;
+	for(uint i = 0; i < P.size(); i++)
+	{
+		std::cout << "Autovalor: " << Lamb[i] << std::endl << "Autovetor relacionado: [";
+		for(uint j = 0; j < P[i].size(); j++)
+		{
+			std::cout << P[j][i];
+			if(j != P[i].size()-1)
+				std::cout << ", ";
+		}
+		std::cout << " ]" << std::endl;
+	}
+
+
+	std::cout << std::endl << "Autovalores e autovetores da mesma matriz quando aplicado o método de Householder:" << std::endl;
+	std::cout << "Autovalor: 49.3831" << std::endl<< "Autovetor relacionado: [0.698061, 0.579872, 0.344866, 0.226863, 0.0778446]" << std::endl;
+	std::cout << "Autovalor: 31.3115" << std::endl<< "Autovetor relacionado: [-0.70729, 0.501214, 0.329826, 0.362475, 0.0913914]" << std::endl;
+	std::cout << "Autovalor: 11.6424" << std::endl<< "Autovetor relacionado: [-0.0413278, 0.591926, -0.774517, -0.155407, -0.154556]" << std::endl;
+	std::cout << "Autovalor: 23.6481" << std::endl<< "Autovetor relacionado: [0.103246, -0.247037, -0.394104, 0.870491, 0.123451]" << std::endl;
+	std::cout << "Autovalor: 4.01488" << std::endl<< "Autovetor relacionado: [0.00908417, -0.0318935, 0.131552, 0.187416, -0.972867]" << std::endl;
+
+
+}
+
+std::vector<std::vector<std::vector<double>>> Eigenvectors::AdaptedJacobiSweep(std::vector<std::vector<double>> A, int n)
+{
+	// Inicialização das matrizes, J como identidade, Aold como A, Jij apenas declarada
+	std::vector<std::vector<double>> J, Jij, Anew, Aold, Abar;
+	J = Eigenvectors::createMatrix(A.size(), true);
+	Jij = Eigenvectors::createMatrix(A.size(), false);
+	Anew = Eigenvectors::createMatrix(A.size(), false);
+	Aold = A;
+	Abar = Eigenvectors::createMatrix(A.size(), false);
+
+	// Loop das colunas
+	for(int j = 0; j < n-1; j++)
+	{
+
+		// Construção da matriz de Jacobi Jij
+		// [EXECUÇÃO DO TERCEIRO METODO E ATRIBUI A Jij]
+		Jij = Eigenvectors::AdaptedJacobiMatrixIJBased(Aold, j+1, j, n);
+
+		
+
+		// Transformãção de similaridade do passo ij
+		// Produto de 3 matrizes
+		// Como Jij não é simétrica, precisamos computar sua transposta
+		Anew = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Jij) ,
+															Eigenvectors::matrixMatrixMultiplication(
+																Aold, Jij
+															) 
+														);
+		
+		std::cout << "Imprimindo Anova para verificar se os termos que eram 0 deixaram de ser 0: " << std::endl;
+		Eigenvectors::printMatrix(Anew);
+
+		// Salvar para o próximo passo
+		Aold = Anew;
+
+		// Acumular o produto das matrizes de Jacobi
+		J = Eigenvectors::matrixMatrixMultiplication(J, Jij);
+		std::cout << "J: " << j;
+	}
+
+	// No fim das iterações, o formato de Anova está proximo de uma matriz diagonal
+	Abar = Anew;
+
+
+	std::cout << "A barra : " << std::endl;
+	Eigenvectors::printMatrix(Abar);
+
+	std::cout << "J: " << std::endl;
+	Eigenvectors::printMatrix(J);
+
+	return {Abar, J};
+}
+
+std::vector<std::vector<double>> Eigenvectors::AdaptedJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n)
 {
 	// Inicialização da matriz Jij como Identidade
 	std::vector<std::vector<double>> Jij = Eigenvectors::createMatrix(A.size(), true);
