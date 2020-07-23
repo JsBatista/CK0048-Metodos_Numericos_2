@@ -430,7 +430,7 @@ Answer Eigenvectors::calculateByDisplacementPower(std::vector<std::vector<double
 }
 
 
-std::vector<std::vector<std::vector<double>>> Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A)
+std::vector<std::vector<std::vector<double>>> Eigenvectors::HouseholderMethod(std::vector<std::vector<double>> A, bool debug)
 {
 	std::vector<std::vector<double>> H, Hi, Ai, Abar, Aim1;
 	
@@ -467,11 +467,15 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::HouseholderMethod(st
 
 	Abar = Ai;
 
-	std::cout << std::endl << "(1)" << std::endl;
-	std::cout << "Matriz A: " << std::endl;
-	Eigenvectors::printMatrix(Abar);
-	std::cout << "Matriz H: " << std::endl;
-	Eigenvectors::printMatrix(H);
+	if(debug)
+	{
+		std::cout << std::endl << "(1)" << std::endl;
+		std::cout << "Matriz A: " << std::endl;
+		Eigenvectors::printMatrix(Abar);
+		std::cout << "Matriz H: " << std::endl;
+		Eigenvectors::printMatrix(H);
+	}
+
 
 
 	Answer abar1 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 1);
@@ -480,80 +484,85 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::HouseholderMethod(st
 	Answer abar4 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 30);
 	Answer abar5 = Eigenvectors::calculateByDisplacementPower(Abar, {1,2,3,4,5}, 50);
 
-	std::cout << std::endl << "(2)" << std::endl;
-	std::cout << "Autovalores e Autovetores da matriz Abarra:" << std::endl;
+	if(debug)
+	{
+		std::cout << std::endl << "(2)" << std::endl;
+		std::cout << "Autovalores e Autovetores da matriz Abarra:" << std::endl;
 
-	std::cout << std::endl << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
+		std::cout << std::endl << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printVector(abar1.getEigenvector());
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printVector(abar1.getEigenvector());
 
-	std::cout << std::endl << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
+		std::cout << std::endl << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printVector(abar2.getEigenvector());
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printVector(abar2.getEigenvector());
 
-	std::cout << std::endl << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
+		std::cout << std::endl << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printVector(abar3.getEigenvector());
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printVector(abar3.getEigenvector());
 
-	std::cout << std::endl << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
+		std::cout << std::endl << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printVector(abar4.getEigenvector());
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printVector(abar4.getEigenvector());
 
-	std::cout << std::endl << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
+		std::cout << std::endl << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printVector(abar5.getEigenvector());
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printVector(abar5.getEigenvector());
 
-	std::cout <<std::endl<< "(3) & (4)" << std::endl << "Autovetores e Autovalores da matriz A:" << std::endl;
+		std::cout <<std::endl<< "(3) & (4)" << std::endl << "Autovetores e Autovalores da matriz A:" << std::endl;
 
-	std::cout << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
+		std::cout << "Primeiro Autovalor: " << abar1.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printMatrix(
-			Eigenvectors::matrixMatrixMultiplication(
-					H, Eigenvectors::transpostMatrix({abar1.getEigenvector()})
-				)
-		);
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printMatrix(
+				Eigenvectors::matrixMatrixMultiplication(
+						H, Eigenvectors::transpostMatrix({abar1.getEigenvector()})
+					)
+			);
 
-	std::cout << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
+		std::cout << "Segundo Autovalor: " << abar2.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printMatrix(
-			Eigenvectors::matrixMatrixMultiplication(
-					H, Eigenvectors::transpostMatrix({abar2.getEigenvector()})
-				)
-		);
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printMatrix(
+				Eigenvectors::matrixMatrixMultiplication(
+						H, Eigenvectors::transpostMatrix({abar2.getEigenvector()})
+					)
+			);
 
-	std::cout << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
+		std::cout << "Terceiro Autovalor: " << abar3.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printMatrix(
-			Eigenvectors::matrixMatrixMultiplication(
-					H, Eigenvectors::transpostMatrix({abar3.getEigenvector()})
-				)
-		);
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printMatrix(
+				Eigenvectors::matrixMatrixMultiplication(
+						H, Eigenvectors::transpostMatrix({abar3.getEigenvector()})
+					)
+			);
 
-	std::cout << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
+		std::cout << "Quarto Autovalor: " << abar4.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printMatrix(
-			Eigenvectors::matrixMatrixMultiplication(
-					H, Eigenvectors::transpostMatrix({abar4.getEigenvector()})
-				)
-		);
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printMatrix(
+				Eigenvectors::matrixMatrixMultiplication(
+						H, Eigenvectors::transpostMatrix({abar4.getEigenvector()})
+					)
+			);
 
-	std::cout << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
+		std::cout << "Quinto Autovalor: " << abar5.getEigenvalue() << std::endl;
 
-	std::cout << "Autovetor relacionado: " << std::endl;
-	Eigenvectors::printMatrix(
-			Eigenvectors::matrixMatrixMultiplication(
-					H, Eigenvectors::transpostMatrix({abar5.getEigenvector()})
-				)
-		);
+		std::cout << "Autovetor relacionado: " << std::endl;
+		Eigenvectors::printMatrix(
+				Eigenvectors::matrixMatrixMultiplication(
+						H, Eigenvectors::transpostMatrix({abar5.getEigenvector()})
+					)
+			);
+	}
+
+	
 
 	return {Abar, H};
 }
@@ -794,9 +803,12 @@ void Eigenvectors::AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n
 	float val = 100;
 
 	// Atribuimos a matriz Avelha a matriz A
-	std::vector<std::vector<std::vector<double>>> householderMethodResults = Eigenvectors::HouseholderMethod(A);
+	std::vector<std::vector<std::vector<double>>> householderMethodResults = Eigenvectors::HouseholderMethod(A, false);
 	Aold = householderMethodResults[0];
 	H = householderMethodResults[1];
+
+	std::cout << "Matriz A:" << std::endl;
+			Eigenvectors::printMatrix(Aold);
 
 	// Loop das varreduras de diagonalização
 	while(val > error)
@@ -815,7 +827,6 @@ void Eigenvectors::AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n
 		// [VERIFICAR SE A MATRIZ JÁ É SUFICIENTEMENTE DIAGONAL]
 		val = Eigenvectors::sumSquareBelowDiagonal(Anew);
 
-		std::cout << "Val: " << val;
 	}
 
 	// Copiar elementos da diagonal principal da matrix para o vetor Lamb
@@ -828,18 +839,18 @@ void Eigenvectors::AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n
 
 	// [PRINT P]
 	// [PRINT LAMB]
-	std::cout << "P que não são os autovetores: " << std::endl;
+	std::cout << std::endl << "P que não são os autovetores: " << std::endl;
 	Eigenvectors::printMatrix(P);
 
 	P = Eigenvectors::matrixMatrixMultiplication(H, P);
 
-	std::cout << "P que agora depois de ser multiplicado por H são os autovetores: " << std::endl;
+	std::cout << std::endl << "P que agora depois de ser multiplicado por H são os autovetores: " << std::endl;
 	Eigenvectors::printMatrix(P);
 
-	std::cout << "Lamb : " << std::endl;
+	std::cout << std::endl << "Lamb : " << std::endl;
 	Eigenvectors::printVector(Lamb);
 
-	std::cout << "Pares de autovalores e autovetores: " << std::endl;
+	std::cout << std::endl << "Pares de autovalores e autovetores: " << std::endl;
 	for(uint i = 0; i < P.size(); i++)
 	{
 		std::cout << "Autovalor: " << Lamb[i] << std::endl << "Autovetor relacionado: [";
@@ -873,45 +884,40 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::AdaptedJacobiSweep(s
 	Aold = A;
 	Abar = Eigenvectors::createMatrix(A.size(), false);
 
+
+
 	// Loop das colunas
 	for(int j = 0; j < n-1; j++)
 	{
+		// Loop das linhas
+		for(int i = j+1; i < n; i++)
+		{
+			// Construção da matriz de Jacobi Jij
+			// [EXECUÇÃO DO TERCEIRO METODO E ATRIBUI A Jij]
+			Jij = Eigenvectors::AdaptedJacobiMatrixIJBased(Aold, i, j, n);
 
-		// Construção da matriz de Jacobi Jij
-		// [EXECUÇÃO DO TERCEIRO METODO E ATRIBUI A Jij]
-		Jij = Eigenvectors::AdaptedJacobiMatrixIJBased(Aold, j+1, j, n);
+			// Transformãção de similaridade do passo ij
+			// Produto de 3 matrizes
+			// Como Jij não é simétrica, precisamos computar sua transposta
+			Anew = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Jij) ,
+																Eigenvectors::matrixMatrixMultiplication(
+																	Aold, Jij
+																) 
+															);
+			std::cout << "Matriz Anova:" << std::endl;
+			Eigenvectors::printMatrix(Anew);
 
-		
+			// Salvar para o próximo passo
+			Aold = Anew;
 
-		// Transformãção de similaridade do passo ij
-		// Produto de 3 matrizes
-		// Como Jij não é simétrica, precisamos computar sua transposta
-		Anew = Eigenvectors::matrixMatrixMultiplication( Eigenvectors::transpostMatrix(Jij) ,
-															Eigenvectors::matrixMatrixMultiplication(
-																Aold, Jij
-															) 
-														);
-		
-		std::cout << "Imprimindo Anova para verificar se os termos que eram 0 deixaram de ser 0: " << std::endl;
-		Eigenvectors::printMatrix(Anew);
-
-		// Salvar para o próximo passo
-		Aold = Anew;
-
-		// Acumular o produto das matrizes de Jacobi
-		J = Eigenvectors::matrixMatrixMultiplication(J, Jij);
-		std::cout << "J: " << j;
+			// Acumular o produto das matrizes de Jacobi
+			J = Eigenvectors::matrixMatrixMultiplication(J, Jij);
+		}	
 	}
 
 	// No fim das iterações, o formato de Anova está proximo de uma matriz diagonal
 	Abar = Anew;
 
-
-	std::cout << "A barra : " << std::endl;
-	Eigenvectors::printMatrix(Abar);
-
-	std::cout << "J: " << std::endl;
-	Eigenvectors::printMatrix(J);
 
 	return {Abar, J};
 }

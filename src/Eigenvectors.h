@@ -33,7 +33,7 @@ class Eigenvectors
 		Answer calculateByInversePower(std::vector<std::vector<double>> A, std::vector<double> v0, double error = 0.000001);
 		Answer calculateByDisplacementPower(std::vector<std::vector<double>> A, std::vector<double> v0, double u, double error = 0.000001);
 
-		std::vector<std::vector<std::vector<double>>> HouseholderMethod(std::vector<std::vector<double>> A);
+		std::vector<std::vector<std::vector<double>>> HouseholderMethod(std::vector<std::vector<double>> A, bool debug = true);
 		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
 
 		void JacobiMethod(std::vector<std::vector<double>> A, int n, double error);
