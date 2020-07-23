@@ -36,8 +36,8 @@ class Eigenvectors
 		std::vector<std::vector<std::vector<double>>> HouseholderMethod(std::vector<std::vector<double>> A, bool debug = true);
 		std::vector<std::vector<double>> HouseholderMethodAux(std::vector<std::vector<double>> A, int i);
 
-		void JacobiMethod(std::vector<std::vector<double>> A, int n, double error);
-		std::vector<std::vector<std::vector<double>>> JacobiSweep(std::vector<std::vector<double>> A, int n);
+		void JacobiMethod(std::vector<std::vector<double>> A, int n, double error, bool householderAdaptation = false);
+		std::vector<std::vector<std::vector<double>>> JacobiSweep(std::vector<std::vector<double>> A, int n, bool householderAdaptation = false);
 		std::vector<std::vector<double>> JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
 		double sumSquareBelowDiagonal(std::vector<std::vector<double>> A);
 
