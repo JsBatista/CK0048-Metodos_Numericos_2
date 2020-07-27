@@ -840,6 +840,9 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 	while(val > error)
 	{
 		// [DECOMPOSIÇÃO QR RETORNANDO AS MATRIZES Q E R]
+		std::vector<std::vector<std::vector<double>>> qrDecompAns = Eigenvectors::QRDecomposition(Aold, n);
+		Q = qrDecompAns[0];
+		R = qrDecompAns[1];
 
 		// Calculando a nova matriz
 		Anew = Eigenvectors::matrixMatrixMultiplication(R, Q);
@@ -883,6 +886,7 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std:
 		{
 			
 			// [EXECUÇÃO DO TERCEIRO MÉTODO DE QR AQUI SENDO O RESULTADO ATRIBUIDO A JIJ]
+			Jij = OldJacobiMatrixIJBased(Rold, i, j, n);
 
 			// Matriz modificada com o elemento (i,j) zerado
 			Rnew = Eigenvectors::matrixMatrixMultiplication(Jij, Rold);

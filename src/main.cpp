@@ -37,7 +37,7 @@ int main()
     Eigenvectors av;
 
 
-    std::cout << "Atividade 14: Método de Jacobi " << std::endl << "Digite o método que deseja executar: " << std::endl << "1 - Método de Jacobi" << std::endl << "2 - Método de Jacobi com adaptação para receber a matrizz do método de Householder" << std::endl;
+    /*std::cout << "Atividade 14: Método de Jacobi " << std::endl << "Digite o método que deseja executar: " << std::endl << "1 - Método de Jacobi" << std::endl << "2 - Método de Jacobi com adaptação para receber a matrizz do método de Householder" << std::endl;
 
     int option;
 
@@ -49,10 +49,10 @@ int main()
         av.JacobiMethod(A, int(A.size()), 0.000001, true);
     else
         std::cout << "Opção inválida, por favor, tente de novo.";
+*/
 
-
-
-
+    av.JacobiMethod(A, int(A.size()), 0.000001 );
+    av.QRMethod(A, int(A.size()), 0.000001);
 
     return 0;
 
