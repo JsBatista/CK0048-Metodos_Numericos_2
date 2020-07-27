@@ -895,3 +895,42 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std:
 	//Retornando a transposta de QT e a matriz Rnova triangular superior
 	return{Eigenvectors::transpostMatrix(QT), Rnew};
 }
+
+std::vector<std::vector<double>> Eigenvectors::OldJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n)
+{
+	// Inicialização da matriz Jij como Identidade
+	std::vector<std::vector<double>> Jij = Eigenvectors::createMatrix(A.size(), true);
+
+	double omega;
+	double epsilon = 0.000001;
+	const double PI  =3.141592653589793238463;
+
+	// Consideraremos Aij = 0
+	if( std::abs(A[i][j]) <= epsilon )
+		return Jij;
+
+	// Calcular omega
+	if(std::abs(A[j][j]) <= epsilon)
+	{
+		if(A[i][j] < 0)
+		{
+			omega = PI/2; // O numerador será positivo, assumiremos que a tangente tende a +Inf
+		}
+		else
+		{
+			omega = -PI/2; // O numerador será negativo, assumiremos que a tangente tende a -Inf
+		}
+	}
+	else
+	{
+		omega = std::atan( (-A[i][j])/A[j][j] ); // Função retornando um angulo +/-
+	}
+
+	// Atribuindo na matriz Jij os valores de cosseno e seno de omega
+	Jij[i][i] = std::cos(omega);
+	Jij[j][j] = std::cos(omega);
+	Jij[i][j] = std::sin(omega);
+	Jij[j][i] = (-1)*std::sin(omega);
+	
+	return Jij;
+}
