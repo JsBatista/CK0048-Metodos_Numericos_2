@@ -41,9 +41,7 @@ class Eigenvectors
 		std::vector<std::vector<double>> JacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
 		double sumSquareBelowDiagonal(std::vector<std::vector<double>> A);
 
-
-		void AdaptedJacobiMethod(std::vector<std::vector<double>> A, int n, double error);
-		std::vector<std::vector<std::vector<double>>> AdaptedJacobiSweep(std::vector<std::vector<double>> A, int n);
-		std::vector<std::vector<double>> AdaptedJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
-		
+		void QRMethod(std::vector<std::vector<double>> A, int n, double error);
+		std::vector<std::vector<std::vector<double>>> QRDecomposition(std::vector<std::vector<double>> A, int n);
+		std::vector<std::vector<double>> OldJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n);
 };

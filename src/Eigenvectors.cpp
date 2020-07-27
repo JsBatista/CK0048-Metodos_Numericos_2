@@ -817,3 +817,49 @@ std::vector<std::vector<double>> Eigenvectors::JacobiMatrixIJBased(std::vector<s
 	
 	return Jij;
 }
+
+
+// Início da declaração do Algoritmo QR
+void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double error)
+{
+	//Inicialização das matrizes, P como identidade, Avelha como A
+	std::vector<std::vector<double>> P, Q, R, Anew, Aold, Abar;
+	P = Eigenvectors::createMatrix(A.size(), true);
+	Q = Eigenvectors::createMatrix(A.size(), true);
+	R = Eigenvectors::createMatrix(A.size(), true);
+	Anew = Eigenvectors::createMatrix(A.size(), true);
+	Aold = A;
+	Abar = Eigenvectors::createMatrix(A.size(), true);
+
+	// Declaração do vetor Lamb que armazena os autovalores de A
+	std::vector<double> Lamb;
+	// Escalar que vai armazenar a soma dos quadrados do termos abaixo da diagonal principal, verificando a convergência
+	float val = 100;
+
+	// Loop de diagonalização
+	while(val > error)
+	{
+		// [DECOMPOSIÇÃO QR RETORNANDO AS MATRIZES Q E R]
+
+		// Calculando a nova matriz
+		Anew = Eigenvectors::matrixMatrixMultiplication(R, Q);
+		// Salvar Anova para a proxima iteração
+		Aold = Anew;	
+		// Acumular o produto das matrizes Q
+		P = Eigenvectors::matrixMatrixMultiplication(P, Q);
+
+		// Verificar se a matriz Anova já é suficientemente diagonal
+		val = Eigenvectors::sumSquareBelowDiagonal(Anew);
+	}
+
+	// Copiar os elementos da diagonal da matriz no vetor Lamb
+	for(uint i = 0; i < Anew.size(); i ++)
+	{
+		Lamb.push_back(Anew[i][i]);
+	}
+
+	std::cout << std::endl << "Matriz P:" << std::endl;
+	Eigenvectors::printMatrix(P);
+	std::cout << std::endl << "Vetor Lambda:" << std::endl;
+	Eigenvectors::printVector(Lamb);
+}
