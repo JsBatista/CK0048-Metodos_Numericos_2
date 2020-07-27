@@ -820,10 +820,10 @@ std::vector<std::vector<double>> Eigenvectors::JacobiMatrixIJBased(std::vector<s
 
 
 // Início da declaração do Algoritmo QR
-void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double error)
+void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double error, bool householderAdaptation)
 {
 	//Inicialização das matrizes, P como identidade, Avelha como A
-	std::vector<std::vector<double>> P, Q, R, Anew, Aold, Abar;
+	std::vector<std::vector<double>> P, Q, R, Anew, Aold, Abar, H;
 	P = Eigenvectors::createMatrix(A.size(), true);
 	Q = Eigenvectors::createMatrix(A.size(), false);
 	R = Eigenvectors::createMatrix(A.size(), false);
@@ -836,11 +836,19 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 	// Escalar que vai armazenar a soma dos quadrados do termos abaixo da diagonal principal, verificando a convergência
 	float val = 100;
 
+	if(householderAdaptation)
+	{
+		// Atribuimos a matriz Avelha a matriz A
+		std::vector<std::vector<std::vector<double>>> householderMethodResults = Eigenvectors::HouseholderMethod(A, false);
+		Aold = householderMethodResults[0];
+		H = householderMethodResults[1];
+	}
+
 	// Loop de diagonalização
 	while(val > error)
 	{
 		// [DECOMPOSIÇÃO QR RETORNANDO AS MATRIZES Q E R]
-		std::vector<std::vector<std::vector<double>>> qrDecompAns = Eigenvectors::QRDecomposition(Aold, n);
+		std::vector<std::vector<std::vector<double>>> qrDecompAns = Eigenvectors::QRDecomposition(Aold, n, householderAdaptation);
 		Q = qrDecompAns[0];
 		R = qrDecompAns[1];
 
@@ -851,6 +859,11 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 		// Acumular o produto das matrizes Q
 		P = Eigenvectors::matrixMatrixMultiplication(P, Q);
 
+		if(householderAdaptation)
+		{
+			std::cout << std::endl << "Anova: ";
+			Eigenvectors::printMatrix(Anew);
+		}
 		// Verificar se a matriz Anova já é suficientemente diagonal
 		val = Eigenvectors::sumSquareBelowDiagonal(Anew);
 	}
@@ -861,15 +874,53 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 		Lamb.push_back(Anew[i][i]);
 	}
 
-	std::cout << std::endl << "Matriz P:" << std::endl;
-	Eigenvectors::printMatrix(P);
+	if(householderAdaptation)
+	{
+		std::cout << std::endl << "P que não são os autovetores: " << std::endl;
+		Eigenvectors::printMatrix(P);
+
+		P = Eigenvectors::matrixMatrixMultiplication(H, P);
+
+		std::cout << std::endl << "P que agora depois de ser multiplicado por H são os autovetores: " << std::endl;
+		Eigenvectors::printMatrix(P);
+	}
+	else
+	{
+		std::cout << std::endl << "Matriz Anova:" << std::endl;
+		Eigenvectors::printMatrix(Anew);
+		std::cout << std::endl << "Matriz P:" << std::endl;
+		Eigenvectors::printMatrix(P);
+	}
+	
 	std::cout << std::endl << "Vetor Lambda:" << std::endl;
 	Eigenvectors::printVector(Lamb);
+
+	std::cout << std::endl << "Pares de autovalores e autovetores: " << std::endl;
+	for(uint i = 0; i < P.size(); i++)
+	{
+		std::cout << "Autovalor: " << Lamb[i] << std::endl << "Autovetor relacionado: [";
+		for(uint j = 0; j < P[i].size(); j++)
+		{
+			std::cout << P[j][i];
+			if(j != P[i].size()-1)
+				std::cout << ", ";
+		}
+		std::cout << " ]" << std::endl;
+	}
+
+
+	std::cout << std::endl << std::endl << "Autovalores e autovetores da mesma matriz quando aplicado o método de Householder:" << std::endl;
+	std::cout << "Autovalor: 49.3831" << std::endl<< "Autovetor relacionado: [0.698061, 0.579872, 0.344866, 0.226863, 0.0778446]" << std::endl;
+	std::cout << "Autovalor: 31.3115" << std::endl<< "Autovetor relacionado: [-0.70729, 0.501214, 0.329826, 0.362475, 0.0913914]" << std::endl;
+	std::cout << "Autovalor: 11.6424" << std::endl<< "Autovetor relacionado: [-0.0413278, 0.591926, -0.774517, -0.155407, -0.154556]" << std::endl;
+	std::cout << "Autovalor: 23.6481" << std::endl<< "Autovetor relacionado: [0.103246, -0.247037, -0.394104, 0.870491, 0.123451]" << std::endl;
+	std::cout << "Autovalor: 4.01488" << std::endl<< "Autovetor relacionado: [0.00908417, -0.0318935, 0.131552, 0.187416, -0.972867]" << std::endl;
+
 }
 
 
 // Início da declaração da decomposição QR
-std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std::vector<std::vector<double>> A, int n)
+std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std::vector<std::vector<double>> A, int n, bool householderAdaptation)
 {
 	std::vector<std::vector<double>> QT, Jij, Rnew, Rold, R;
 	QT = Eigenvectors::createMatrix(A.size(), true);
@@ -896,11 +947,18 @@ std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std:
 			QT = Eigenvectors::matrixMatrixMultiplication(Jij, QT);
 		}
 	}
+
+	if(!householderAdaptation)
+	{
+		std::cout << std::endl << "Matriz saindo da iteração QT:" << std::endl;
+		Eigenvectors::printMatrix(QT);
+	}
+
 	//Retornando a transposta de QT e a matriz Rnova triangular superior
 	return{Eigenvectors::transpostMatrix(QT), Rnew};
 }
 
-std::vector<std::vector<double>> Eigenvectors::OldJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n)
+std::vector<std::vector<double>> Eigenvectors::OldJacobiMatrixIJBased(std::vector<std::vector<double>> A, int i, int j, int n, bool householderAdaptation)
 {
 	// Inicialização da matriz Jij como Identidade
 	std::vector<std::vector<double>> Jij = Eigenvectors::createMatrix(A.size(), true);
