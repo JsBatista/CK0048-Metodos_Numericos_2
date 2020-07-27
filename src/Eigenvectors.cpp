@@ -825,11 +825,11 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 	//Inicialização das matrizes, P como identidade, Avelha como A
 	std::vector<std::vector<double>> P, Q, R, Anew, Aold, Abar;
 	P = Eigenvectors::createMatrix(A.size(), true);
-	Q = Eigenvectors::createMatrix(A.size(), true);
-	R = Eigenvectors::createMatrix(A.size(), true);
-	Anew = Eigenvectors::createMatrix(A.size(), true);
+	Q = Eigenvectors::createMatrix(A.size(), false);
+	R = Eigenvectors::createMatrix(A.size(), false);
+	Anew = Eigenvectors::createMatrix(A.size(), false);
 	Aold = A;
-	Abar = Eigenvectors::createMatrix(A.size(), true);
+	Abar = Eigenvectors::createMatrix(A.size(), false);
 
 	// Declaração do vetor Lamb que armazena os autovalores de A
 	std::vector<double> Lamb;
@@ -862,4 +862,36 @@ void Eigenvectors::QRMethod(std::vector<std::vector<double>> A, int n, double er
 	Eigenvectors::printMatrix(P);
 	std::cout << std::endl << "Vetor Lambda:" << std::endl;
 	Eigenvectors::printVector(Lamb);
+}
+
+
+// Início da declaração da decomposição QR
+std::vector<std::vector<std::vector<double>>> Eigenvectors::QRDecomposition(std::vector<std::vector<double>> A, int n)
+{
+	std::vector<std::vector<double>> QT, Jij, Rnew, Rold, R;
+	QT = Eigenvectors::createMatrix(A.size(), true);
+	Jij = Eigenvectors::createMatrix(A.size(), false);
+	Rnew = Eigenvectors::createMatrix(A.size(), false);
+	Rold = A;
+	R = Eigenvectors::createMatrix(A.size(), false);
+
+	// loop das colunas
+	for(int j = 0; j < n-1; j++)
+	{
+		// loop das linhas
+		for(int i = j+1; i < n; i++)
+		{
+			
+			// [EXECUÇÃO DO TERCEIRO MÉTODO DE QR AQUI SENDO O RESULTADO ATRIBUIDO A JIJ]
+
+			// Matriz modificada com o elemento (i,j) zerado
+			Rnew = Eigenvectors::matrixMatrixMultiplication(Jij, Rold);
+			// Salvar para o próximo caso 
+			Rold = Rnew;
+			// Acumular produto das matrizes de Jacobi
+			QT = Eigenvectors::matrixMatrixMultiplication(Jij, QT);
+		}
+	}
+	//Retornando a transposta de QT e a matriz Rnova triangular superior
+	return{Eigenvectors::transpostMatrix(QT), Rnew};
 }
